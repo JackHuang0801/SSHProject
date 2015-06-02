@@ -1,7 +1,7 @@
 /*
  * User.java
  * com.newzhongmei.pmi.coreBusiness.entity.systemManagement
- * 
+ *
  * Copyright (c) 2010 Jack Huang Limited. All Rights Reserved.
  */
 package com.saas.luna.coreBizlogic.pojo.systemManagement;
@@ -23,27 +23,29 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.apache.commons.lang.StringUtils;
+
+
 import org.hibernate.annotations.Proxy;
 import org.springframework.security.GrantedAuthority;
 import org.springframework.security.GrantedAuthorityImpl;
 import org.springframework.security.userdetails.UserDetails;
 
-import com.asiasoft.javaee.core.entity.BaseDomainEntity;
+import com.saas.luna.JackFramework.core.pojo.BaseDomainPojo;
+
 
 /**
  * @author <a href="mailto:704401701@qq.com">Jack Huang</a>
- * 
+ *
  * @version V1.00 2010-5-2 上午09:36:37
  */
 @Entity
 @Table(name = "T_user")
 @Proxy(lazy = false)
 // @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class User extends BaseDomainEntity<Long> implements UserDetails {
+public class User extends BaseDomainPojo<Long> implements UserDetails {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 2546742654373798923L;
 
@@ -81,13 +83,13 @@ public class User extends BaseDomainEntity<Long> implements UserDetails {
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
-	
+
 	@Transient
-	private Map<String, List<Res>> roleResources;
+	private Map<String, List<Resource>> roleResources;
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.springframework.security.userdetails.UserDetails#getAuthorities()
 	 */
@@ -103,13 +105,13 @@ public class User extends BaseDomainEntity<Long> implements UserDetails {
 
 	/**
 	 * Returns the authorites string
-	 * 
-	 * 访问当前登录用户�?拥有的权�?,类似于ROLE_SUPER或�?�ROLE_USER,ROLE_ADMIN,ROLE_SUPER等角�?(权限)组字符串
-	 * 
-	 * eg. 
-	 *     downpour --- ROLE_ADMIN,ROLE_USER 
+	 *
+	 * 访问当前登录用户�?拥有的权�?,类似于ROLE_SUPER或�?�ROLE_USER,ROLE_ADMIN,ROLE_SUPER等角�?(权限)组字符串
+	 *
+	 * eg.
+	 *     downpour --- ROLE_ADMIN,ROLE_USER
 	 *     robbin --- ROLE_ADMIN
-	 * 
+	 *
 	 * @return
 	 */
 	@Transient
@@ -123,24 +125,24 @@ public class User extends BaseDomainEntity<Long> implements UserDetails {
 
 	/**
 	 * Get currently user has resources.
-	 * 
-	 * 访问当前登录用户能够访问的资�?
-	 * 
+	 *
+	 * 访问当前登录用户能够访问的资�?
+	 *
 	 * @return the roleResources
 	 */
 	@Transient
-	public Map<String, List<Res>> getRoleResources() {
+	public Map<String, List<Resource>> getRoleResources() {
 		// init roleResources for the first time
 		if (this.roleResources == null) {
-			this.roleResources = new HashMap<String, List<Res>>();
+			this.roleResources = new HashMap<String, List<Resource>>();
 
 			for (Role role : this.roles) {
 				String roleName = role.getRoleName();
-				Set<Res> resources = role.getResources();
-				for (Res resource : resources) {
+				Set<Resource> resources = role.getResources();
+				for (Resource resource : resources) {
 					String key = roleName + "_" + resource.getResourceType();
 					if (!this.roleResources.containsKey(key)) {
-						this.roleResources.put(key, new ArrayList<Res>());
+						this.roleResources.put(key, new ArrayList<Resource>());
 					}
 					this.roleResources.get(key).add(resource);
 				}
@@ -152,7 +154,7 @@ public class User extends BaseDomainEntity<Long> implements UserDetails {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.springframework.security.userdetails.UserDetails#getUsername()
 	 */
 	@Override
@@ -164,7 +166,7 @@ public class User extends BaseDomainEntity<Long> implements UserDetails {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.springframework.security.userdetails.UserDetails#getPassword()
 	 */
 	@Override
@@ -175,7 +177,7 @@ public class User extends BaseDomainEntity<Long> implements UserDetails {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.springframework.security.userdetails.UserDetails#isAccountNonExpired
 	 * ()
@@ -189,7 +191,7 @@ public class User extends BaseDomainEntity<Long> implements UserDetails {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.springframework.security.userdetails.UserDetails#isAccountNonLocked()
 	 */
@@ -202,7 +204,7 @@ public class User extends BaseDomainEntity<Long> implements UserDetails {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.springframework.security.userdetails.UserDetails#isCredentialsNonExpired
 	 * ()
@@ -216,7 +218,7 @@ public class User extends BaseDomainEntity<Long> implements UserDetails {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.springframework.security.userdetails.UserDetails#isEnabled()
 	 */
 	@Override
@@ -315,13 +317,13 @@ public class User extends BaseDomainEntity<Long> implements UserDetails {
 
 		toString.append("\ntrueName = ");
 		toString.append(trueName);
-		
+
 		toString.append("\nofficePhone = ");
 		toString.append(officePhone);
-		
+
 		toString.append("\nmobilePhone = ");
 		toString.append(mobileTelephone);
-		
+
 		toString.append("\nemail = ");
 		toString.append(email);
 		return new String(toString);

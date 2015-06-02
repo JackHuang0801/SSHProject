@@ -23,7 +23,7 @@ import com.asiasoft.javaee.core.entity.BaseDomainEntity;
 /**
  * @author <a href="mailto:704401701@qq.com">Jack Huang</a>
  * 
- * @version V1.00 2010-5-2 ä¸Šå?ˆ09:33:38
+ * @version V1.00 2010-5-2 ä¸Šï¿½?ï¿½09:33:38
  */
 @Entity
 @Table(name = "T_role")
@@ -50,16 +50,16 @@ public class Role extends BaseDomainEntity<Long> {
 		this.users = users;
 	}
 
-	private Set<Res> resources = new HashSet<Res>();
+	private Set<Resource> resources = new HashSet<Resource>();
 
-	@ManyToMany(fetch = FetchType.EAGER, targetEntity = com.newzhongmei.pmi.coreBusiness.entity.systemManagement.Res.class, cascade = {
+	@ManyToMany(fetch = FetchType.EAGER, targetEntity = com.Resource.pmi.coreBusiness.entity.systemManagement.Res.class, cascade = {
 			CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinTable(name = "Role_Resource", joinColumns = @JoinColumn(name = "ROLE_ID"), inverseJoinColumns = @JoinColumn(name = "RESOURCE_ID"))
-	public Set<Res> getResources() {
+	public Set<Resource> getResources() {
 		return resources;
 	}
 
-	public void setResources(Set<Res> resources) {
+	public void setResources(Set<Resource> resources) {
 		this.resources = resources;
 	}
 
