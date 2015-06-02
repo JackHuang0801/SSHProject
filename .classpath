@@ -41,5 +41,13 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/devLib/spring-framework-4.2.0.RC1/spring-core-4.2.0.RC1.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/devLib/spring-framework-4.2.0.RC1/spring-web-4.2.0.RC1.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/devLib/spring-framework-4.2.0.RC1/spring-webmvc-4.2.0.RC1.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/devLib/spring-security-2.0.5.RELEASE/spring-security-acl-2.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/devLib/spring-security-2.0.5.RELEASE/spring-security-cas-client-2.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/devLib/spring-security-2.0.5.RELEASE/spring-security-core-2.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/devLib/spring-security-2.0.5.RELEASE/spring-security-core-tiger-2.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/devLib/spring-security-2.0.5.RELEASE/spring-security-ntlm-2.0.5.RELEASE.jar.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/devLib/spring-security-2.0.5.RELEASE/spring-security-openid-2.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/devLib/spring-security-2.0.5.RELEASE/spring-security-portlet-2.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/devLib/spring-security-2.0.5.RELEASE/spring-security-taglibs-2.0.5.RELEASE.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

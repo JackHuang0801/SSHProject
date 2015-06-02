@@ -1,7 +1,7 @@
 /*
  * Role.java
  * com.newzhongmei.pmi.coreBusiness.entity.systemManagement
- * 
+ *
  * Copyright (c) 2010 Jack Huang Limited. All Rights Reserved.
  */
 package com.saas.luna.coreBizlogic.pojo.systemManagement;
@@ -22,7 +22,7 @@ import com.asiasoft.javaee.core.entity.BaseDomainEntity;
 
 /**
  * @author <a href="mailto:704401701@qq.com">Jack Huang</a>
- * 
+ *
  * @version V1.00 2010-5-2 上�?�09:33:38
  */
 @Entity
@@ -31,7 +31,7 @@ import com.asiasoft.javaee.core.entity.BaseDomainEntity;
 public class Role extends BaseDomainEntity<Long> {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -8733162089000020731L;
 
@@ -52,7 +52,7 @@ public class Role extends BaseDomainEntity<Long> {
 
 	private Set<Resource> resources = new HashSet<Resource>();
 
-	@ManyToMany(fetch = FetchType.EAGER, targetEntity = com.Resource.pmi.coreBusiness.entity.systemManagement.Res.class, cascade = {
+	@ManyToMany(fetch = FetchType.EAGER, targetEntity = com.saas.luna.coreBizlogic.pojo.systemManagement.Resource.class, cascade = {
 			CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinTable(name = "Role_Resource", joinColumns = @JoinColumn(name = "ROLE_ID"), inverseJoinColumns = @JoinColumn(name = "RESOURCE_ID"))
 	public Set<Resource> getResources() {
