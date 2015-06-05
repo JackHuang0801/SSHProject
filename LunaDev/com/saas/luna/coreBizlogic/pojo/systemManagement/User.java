@@ -24,11 +24,16 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 
+
+
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Proxy;
 import org.springframework.security.GrantedAuthority;
 import org.springframework.security.GrantedAuthorityImpl;
 import org.springframework.security.userdetails.UserDetails;
+
+//import org.springframework.security.core.GrantedAuthority;
+//import org.springframework.security.core.userdetails.UserDetails;
 
 import com.saas.luna.JackFramework.core.pojo.BaseDomainPojo;
 
@@ -39,7 +44,7 @@ import com.saas.luna.JackFramework.core.pojo.BaseDomainPojo;
  * @version V1.00 2010-5-2 上午09:36:37
  */
 @Entity
-@Table(name = "T_user")
+@Table(name = "T_USER")
 @Proxy(lazy = false)
 // @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class User extends BaseDomainPojo<Long> implements UserDetails {
@@ -106,7 +111,7 @@ public class User extends BaseDomainPojo<Long> implements UserDetails {
 	/**
 	 * Returns the authorites string
 	 *
-	 * 访问当前登录用户�?拥有的权�?,类似于ROLE_SUPER或�?�ROLE_USER,ROLE_ADMIN,ROLE_SUPER等角�?(权限)组字符串
+	 * 访问当前登录用户�?拥有的权�?,类似于ROLE_SUPER或�?�ROLE_USER,ROLE_ADMIN,ROLE_SUPER等角色(权限)组字符串
 	 *
 	 * eg.
 	 *     downpour --- ROLE_ADMIN,ROLE_USER
@@ -126,7 +131,7 @@ public class User extends BaseDomainPojo<Long> implements UserDetails {
 	/**
 	 * Get currently user has resources.
 	 *
-	 * 访问当前登录用户能够访问的资�?
+	 * 访问当前登录用户能够访问的资源
 	 *
 	 * @return the roleResources
 	 */

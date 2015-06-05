@@ -23,10 +23,10 @@ import com.asiasoft.javaee.core.entity.BaseDomainEntity;
 /**
  * @author <a href="mailto:704401701@qq.com">Jack Huang</a>
  *
- * @version V1.00 2010-5-2 上�?�09:33:38
+ * @version V1.00 2010-5-2 上午09:33:38
  */
 @Entity
-@Table(name = "T_role")
+@Table(name = "T_ROLE")
 // @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Role extends BaseDomainEntity<Long> {
 

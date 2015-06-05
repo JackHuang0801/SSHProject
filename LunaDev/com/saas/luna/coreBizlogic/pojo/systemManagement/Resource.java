@@ -1,7 +1,7 @@
 /*
  * Res.java
  * com.newzhongmei.pmi.coreBusiness.entity.systemManagement
- * 
+ *
  * Copyright (c) 2010 Jack Huang Limited. All Rights Reserved.
  */
 package com.saas.luna.coreBizlogic.pojo.systemManagement;
@@ -31,8 +31,8 @@ import org.apache.commons.lang.StringUtils;
 
 /**
  * @author <a href="mailto:704401701@qq.com">Jack Huang</a>
- * 
- * @version V1.00 2010-5-2 上�?�09:28:20
+ *
+ * @version V1.00 2010-5-2 上午09:28:20
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -40,7 +40,7 @@ import org.apache.commons.lang.StringUtils;
 @Table(name = "T_resource")
 public class Resource {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 4598229086719103918L;
 
@@ -100,9 +100,9 @@ public class Resource {
 
 	/**
 	 * Get resource's value
-	 * 
+	 *
 	 * (1)Menu返回的是类似于 (2)Url返回的是类似于/**或者/pages/user/**等URL字符串
-	 * 
+	 *
 	 * @return
 	 */
 	public String getValue() {
@@ -115,9 +115,9 @@ public class Resource {
 
 	/**
 	 * Get role authorities as string
-	 * 
+	 *
 	 * 该方法返回的是类似于ROLE_SUPER或者ROLE_USER,ROLE_ADMIN,ROLE_SUPER等角色(�?��?)组字符串
-	 * 
+	 *
 	 * @return
 	 */
 	@Transient
