@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+
+<struts>
+
+	<package name="global" extends="json-default">
+
+		<global-results>
+			<result name="accessException">/pages/error.jsp</result>
+		</global-results>
+
+		<!-- 捕获AccessDeniedException，并转到相应的页面 -->
+		<global-exception-mappings>
+			<exception-mapping result="accessException"
+				exception="org.springframework.security.AccessDeniedException" name="accessException">
+			</exception-mapping>
+		</global-exception-mappings>
+
+		<!-- 显示登录的页面,基本没方法 调用  -->
+		<action name="showLogin"
+			class="com.saas.luna.webBusiness.struts.action.LoginAction"
+			method="showLogin">
+			<result name="success">/pages/login.jsp</result>
+			<result name="error">/pages/error.jsp</result>
+		</action>
+
+		<!-- 显示主页的Action,不过在显示主页之前要读取当前登录的用户信息,存放到session之中  -->
+		<action name="showHome"
+			class="com.saas.luna.webBusiness.struts.action.LoginAction"
+			method="showHome">
+			<result name="success">/pages/home.jsp</result>
+			<result name="error">/pages/error.jsp</result>
+		</action>
+
+		<action name="showService">
+			<result>/pages/serviceManagement/service.jsp</result>
+			<result name="error">/pages/error.jsp</result>
+		</action>
+
+		<!-- 登录认证的逻辑都交给Spring Security进行处理,该Action将作废. -->
+		<action name="login"
+			class="com.saas.luna.webBusiness.struts.action.LoginAction"
+			method="login">
+			<result type="json" />
+			<result name="error">/pages/error.jsp</result>
+		</action>
+	</package>
+</struts>

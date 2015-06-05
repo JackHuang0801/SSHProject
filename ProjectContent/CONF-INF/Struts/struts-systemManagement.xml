@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+	<package name="systemManagement" extends="json-default"
+		namespace="/systemManagement">
+
+<!-- user -->
+		<action name="listUser"
+			class="com.saas.luna.webBusiness.struts.action.systemManagement.UserAction"
+			method="listUser">
+			<result type="json">
+				<param name="excludeProperties">
+					model,page,rows,total,records,roleDTO,rolesDTO,usersDTO,queryConditionUserDTO
+				</param>
+			</result>
+			<result name="error">/pages/error.jsp</result>
+		</action>
+		<action name="listUsers"
+			class="com.saas.luna.webBusiness.struts.action.systemManagement.UserAction"
+			method="listUsers">
+			<result type="json" />
+			<result name="error">/pages/error.jsp</result>
+		</action>
+		<action name="saveOrUpdateUser"
+			class="com.saas.luna.webBusiness.struts.action.systemManagement.UserAction"
+			method="saveOrUpdateUser">
+			<result type="json">
+				<param name="excludeProperties">
+					model,roleDTO,rolesDTO,queryConditionUserDTO
+				</param>
+			</result>
+			<result name="error">/pages/error.jsp</result>
+		</action>
+		<action name="updateUserPassword"
+			class="com.saas.luna.webBusiness.struts.action.systemManagement.UserAction"
+			method="updateUserPassword">
+			<result type="json">
+				<param name="excludeProperties">
+					model,roleDTO,rolesDTO,queryConditionUserDTO
+				</param>
+			</result>
+			<result name="error">/pages/error.jsp</result>
+		</action>
+		<action name="deleteUser"
+			class="com.saas.luna.webBusiness.struts.action.systemManagement.UserAction"
+			method="destroyUser">
+			<result type="json" />
+		</action>
+		<action name="listUserRoles"
+			class="com.saas.luna.webBusiness.struts.action.systemManagement.UserAction"
+			method="listUserRoles">
+			<result type="json"></result>
+			<result name="error">/pages/error.jsp</result>
+		</action>
+		<action name="saveUserRoles"
+			class="com.saas.luna.webBusiness.struts.action.systemManagement.UserAction"
+			method="saveUserRoles">
+			<result type="json"></result>
+			<result name="error">/pages/error.jsp</result>
+		</action>
+
+<!-- department -->
+		<action name="listDepartmentsByFk"
+			class="com.saas.luna.webBusiness.struts.action.systemManagement.DepartmentAction"
+			method="listDepartmentsByFk">
+			<result type="json">
+				<param name="root">treeNodes</param>
+			</result>
+			<result name="error">/pages/error.jsp</result>
+		</action>
+
+		<action name="saveOrUpdateDepartment"
+			class="com.saas.luna.webBusiness.struts.action.systemManagement.DepartmentAction"
+			method="saveOrUpdateDepartment">
+			<result type="json"></result>
+			<result name="error">/pages/error.jsp</result>
+		</action>
+
+		<action name="deleteDepartment"
+			class="com.saas.luna.webBusiness.struts.action.systemManagement.DepartmentAction"
+			method="destroyDepartment">
+			<result type="json" />
+		</action>
+
+<!-- role -->
+		<action name="saveRoleRes"
+			class="com.saas.luna.webBusiness.struts.action.systemManagement.SecurityAction"
+			method="saveRoleRes">
+			<result type="json">
+				<param name="excludeProperties">
+					model,roles,totalCount
+				</param>
+			</result>
+			<result name="error">/pages/error.jsp</result>
+		</action>
+
+		<action name="listRoles"
+			class="com.saas.luna.webBusiness.struts.action.systemManagement.SecurityAction"
+			method="listRoels">
+			<result type="json"></result>
+			<result name="error">/pages/error.jsp</result>
+		</action>
+
+		<action name="saveOrUpdateRole"
+			class="com.saas.luna.webBusiness.struts.action.systemManagement.SecurityAction"
+			method="saveOrUpdateRole">
+			<result type="json">
+				<param name="excludeProperties">
+					ResourceDTO,model,roles,totalCount
+				</param>
+			</result>
+			<result name="error">/pages/error.jsp</result>
+		</action>
+
+		<action name="deleteRole"
+			class="com.saas.luna.webBusiness.struts.action.systemManagement.SecurityAction"
+			method="destroyRole">
+			<result type="json" />
+		</action>
+
+<!-- resource -->
+		<action name="listResourcesByFk"
+			class="com.saas.luna.webBusiness.struts.action.systemManagement.SecurityAction"
+			method="listResourcesByFk">
+			<result type="json">
+				<param name="root">treeNodes</param>
+			</result>
+			<result name="error">/pages/error.jsp</result>
+		</action>
+
+		<action name="listResourcesByRoleID"
+			class="com.saas.luna.webBusiness.struts.action.systemManagement.SecurityAction"
+			method="listResourcesByRoleID">
+			<result type="json">
+				<!--<param name="root">treeNodes</param>
+			-->
+			</result>
+			<result name="error">/pages/error.jsp</result>
+		</action>
+
+		<action name="saveOrUpdateRes"
+			class="com.saas.luna.webBusiness.struts.action.systemManagement.SecurityAction"
+			method="saveOrUpdateRes">
+			<result type="json">
+				<param name="excludeProperties">
+					RoleDTO,model,resource,totalCount
+				</param>
+			</result>
+			<result name="error">/pages/error.jsp</result>
+		</action>
+
+		<action name="deleteRes"
+			class="com.saas.luna.webBusiness.struts.action.systemManagement.SecurityAction"
+			method="destroyRes">
+			<result type="json" />
+		</action>
+	</package>
+
+</struts>
