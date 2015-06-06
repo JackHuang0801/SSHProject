@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       					http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<!-- User  -->
+	<!-- <bean id="userService"
+		class="com.saas.luna.coreBusiness.service.systemManagement.UserService" />-->
+	<bean id="userDAO"
+		class="com.saas.luna.coreBusiness.dao.systemManagement.hibernate.HibernateUserDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+
+	<!-- Department -->
+	<bean id="departmentService"
+		class="com.saas.luna.coreBusiness.service.systemManagement.DepartmentService" />
+	<bean id="departmentDAO"
+		class="com.saas.luna.coreBusiness.dao.systemManagement.hibernate.HibernateDepartmentDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- Role and Res -->
+	<bean id="securityService"
+		class="com.saas.luna.coreBusiness.service.systemManagement.SecurityService" />
+
+	<bean id="roleDAO"
+		class="com.saas.luna.coreBusiness.dao.systemManagement.hibernate.HibernateRoleDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<bean id="resourceDAO"
+		class="com.saas.luna.coreBusiness.dao.systemManagement.hibernate.HibernateResourceDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<bean id="menuDAO"
+		class="com.saas.luna.coreBusiness.dao.systemManagement.hibernate.HibernateMenuDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<bean id="urlDAO"
+		class="com.saas.luna.coreBusiness.dao.systemManagement.hibernate.HibernateUrlDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<bean id="methodDAO"
+		class="com.saas.luna.coreBusiness.dao.systemManagement.hibernate.HibernateMethodDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+</beans>

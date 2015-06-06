@@ -18,7 +18,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import com.asiasoft.javaee.core.entity.BaseDomainEntity;
+import com.saas.luna.JackFramework.core.pojo.BaseDomainPojo;
+
 
 /**
  * @author <a href="mailto:704401701@qq.com">Jack Huang</a>
@@ -28,7 +29,7 @@ import com.asiasoft.javaee.core.entity.BaseDomainEntity;
 @Entity
 @Table(name = "T_ROLE")
 // @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Role extends BaseDomainEntity<Long> {
+public class Role extends BaseDomainPojo<Long> {
 
 	/**
 	 *

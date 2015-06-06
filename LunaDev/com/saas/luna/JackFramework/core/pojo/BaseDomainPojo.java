@@ -21,7 +21,7 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import com.asiasoft.javaee.core.AbstractValueObject;
+import com.saas.luna.JackFramework.core.AbstractValueObject;
 
 /**
  * ClassName:BaseDomainPojo Date: 2015年6月2日 下午1:55:03

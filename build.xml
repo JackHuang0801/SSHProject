@@ -1,0 +1,725 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+	Copyright 2015. All rights reserved.
+
+	Creation date: 2015-06-06
+	Author: Jack Huang
+-->
+
+
+<project name="Luna_ant_command" default="all" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+
+	<!-- ===================== Global Property Definitions =========================== -->
+
+<!--	<property file="ivy.properties" /> -->
+
+	<property file="build.properties" />
+
+	<property environment="env"/>
+	<property name="jdk.home" value="${env.JAVA_HOME}" />
+	<!--<property name="tomcat.home" value="${env.TOMCAT_HOME}" />-->
+	<property name="tomcat.home" value="I:\apache-tomcat-8.0.22" />
+
+	<property name="src.home"   value="${basedir}/${src.home}" />
+	<property name="lib.home"   value="${basedir}/${lib.home}" />
+	<property name="res.home"   value="${basedir}/${res.home}" />
+	<property name="web.home"   value="${basedir}/${web.home}" />
+	<property name="docs.home"  value="${basedir}/${docs.home}" />
+	<property name="build.home" value="${basedir}/${build.home}" />
+	<property name="dist.home"  value="${basedir}/${dist.home}" />
+	<property name="test.home"  value="${basedir}/${test.home}" />
+
+	<!--<property name="src.java.dir"      value="${src.home}/java" /> -->
+    <property name="res.conf.dir"      value="${res.home}/CONF-INF" />
+    <property name="res.i18n.dir"      value="${res.home}/i18n" />
+	<property name="res.sql.dir"       value="${res.home}/sql" />
+    <property name="res.make.dir"      value="${res.home}/make" />
+	<property name="build.classes.dir" value="${build.home}/classes" />
+	<property name="build.lib.dir"     value="${build.home}/lib" />
+	<property name="build.sql.dir"     value="${build.home}/sql" />
+	<property name="build.docs.dir"    value="${build.home}/docs" />
+    <property name="docs.style.dir"    value="${docs.home}/style" />
+	<property name="test.java.dir"     value="${test.home}/java" />
+	<property name="test.classes.dir"  value="${test.home}/classes" />
+    <property name="test.output.dir"   value="${test.home}/output" />
+    <property name="test.reports.dir"  value="${test.home}/reports" />
+
+
+	<!--  ==================== Compilation Control Options ====================
+			These properties control option settings on the Javac compiler when it
+			is invoked using the <javac> task.
+			compile.debug        Should compilation include the debug option?
+			compile.deprecation  Should compilation include the deprecation option?
+			compile.optimize     Should compilation include the optimize option?
+			compile.encoding     Define the encoding which the compilation should use.
+	-->
+	<property name="compile.debug"       value="true"/>
+	<property name="compile.deprecation" value="true"/>
+	<property name="compile.optimize"    value="true"/>
+	<property name="compile.encoding"    value="UTF-8"/>
+
+
+	<!-- ===================== Compilation Classpath =========================== -->
+	<path id="classpath">
+        <pathelement location="${jdk.home}/lib/dt.jar"/>
+        <pathelement location="${jdk.home}/lib/tools.jar"/>
+        <fileset dir="${tomcat.home}">
+            <include name="lib/**/*.jar"/>
+		</fileset>
+        <fileset dir="lib">
+            <include name="**/*.jar"/>
+        </fileset>
+		<!--
+		<fileset dir="${lib.home}">
+			<include name="**/*.jar"/>
+		</fileset>
+        <fileset dir="lib">
+            <include name="**/*.jar"/>
+        </fileset>
+		<pathelement location="${build.classes.dir}"/>
+		<pathelement location="${res.conf.dir}"/>
+		<pathelement location="${res.home}"/>
+
+		<pathelement location="${lib.home}/lib/devLib/hibernate-release-4.3.10.Final/*.jar"/>
+		<pathelement location="${lib.home}/lib/devLib/spring-security-4.0.1.RELEASE/*.jar"/>
+		<pathelement location="${lib.home}/lib/devLib/struts2-2.3.24/*.jar"/>
+		-->
+		<pathelement location="${lib.home}/lib/devLib/**/*.jar"/>
+	</path>
+
+
+	<!-- ===================== Ivy target: resolve =========================== -->
+	<ivy:settings file="ivysettings.xml" />
+    <target name="resolve" description="--> retreive dependencies with ivy">
+    	<!-- <property name="ivy.default.ivy.user.dir" value="c:/ivycache" /> -->
+    	<ivy:resolve file="ivy.xml" conf="*" />
+    	<ivy:retrieve pattern="${lib.home}/[conf]/[artifact]-[revision].[ext]" />
+    </target>
+
+	<target name="clean-cache" description="--> clean the ivy cache">
+		<ivy:cleancache />
+	</target>
+
+	<!-- ===================== Ivy target: report =========================== -->
+    <target name="report" depends="resolve" description="--> generates a report of dependencies">
+        <ivy:report todir="${build.home}"/>
+    </target>
+
+
+	<!-- ===================== Build Targets below here =========================== -->
+	<target name="check-step1-environment" description="check environment">
+		<available property="jdk.present" file="${jdk.home}/lib/dt.jar"/>
+		<antcall target="check-step2-jdk"/>
+	</target>
+
+	<target name="check-step2-jdk" unless="jdk.present">
+		<fail>
+            Property "jdk.home" is set, but it does not seem
+            to point to the right directory.
+		</fail>
+	</target>
+
+	<target name="check-step3-init" depends="check-step1-environment" description="initialize">
+		<!-- Create the time stamp -->
+		<tstamp />
+	</target>
+
+	<target name="clean" description="clean up">
+		<delete dir="${build.home}" />
+		<delete dir="${dist.home}" />
+	</target>
+
+	<target name="prepare" depends="clean" description="preparation steps can be placed here">
+	</target>
+
+	<target name="compile" depends="prepare" description="compile the source" >
+		<mkdir dir="${build.home}" />
+		<mkdir dir="${build.classes.dir}" />
+		<javac srcdir="${src.home}"
+			destdir="${build.classes.dir}"
+			debug="${compile.debug}"
+			deprecation="${compile.deprecation}"
+			optimize="${compile.optimize}"
+			includes="**/*.java"
+			encoding="${compile.encoding}">
+			<classpath refid="classpath" />
+		</javac>
+	</target>
+
+	<target name="Step3-2-build" depends="compile">
+
+		<mkdir dir="${build.lib.dir}"/>
+
+        <jar destfile="${build.lib.dir}/luna-aop.jar">
+            <fileset dir="${build.classes.dir}">
+                <include name="com/saas/luna/aop/**" />
+            </fileset>
+        </jar>
+        <jar destfile="${build.lib.dir}/luna-coreBusiness.jar">
+			<fileset dir="${build.classes.dir}">
+				<include name="com/saas/luna/coreBusiness/**" />
+			</fileset>
+		</jar>
+        <jar destfile="${build.lib.dir}/luna-support.jar">
+            <fileset dir="${build.classes.dir}">
+                <include name="com/saas/luna/support/**" />
+            </fileset>
+        </jar>
+        <jar destfile="${build.lib.dir}/luna-security.jar">
+            <fileset dir="${build.classes.dir}">
+                <include name="com/saas/luna/security/**" />
+            </fileset>
+        </jar>
+        <jar destfile="${build.lib.dir}/luna-webBusiness.jar">
+            <fileset dir="${build.classes.dir}">
+                <include name="com/saas/luna/webBusiness/**" />
+            </fileset>
+            <fileset dir="${res.CONF-INF.dir}/struts">
+                <include name="*.*" />
+            </fileset>
+        </jar>
+        <jar destfile="${build.lib.dir}/luna-test.jar">
+            <fileset dir="${build.classes.dir}">
+                <include name="com/saas/luna/test/**" />
+            </fileset>
+        </jar>
+
+	</target>
+
+    <target name="test-clean" description="clean up">
+        <delete dir="${test.classes.dir}" />
+        <delete dir="${test.output.dir}" />
+        <delete dir="${test.reports.dir}" />
+    </target>
+
+    <target name="test-prepare" depends="test-clean" description="preparation steps can be placed here">
+        <mkdir dir="${test.classes.dir}" />
+        <mkdir dir="${test.output.dir}" />
+        <mkdir dir="${test.reports.dir}" />
+    </target>
+
+    <target name="test-compile" depends="test-prepare" description="compile test source files">
+        <javac srcdir="${test.java.dir}"
+               destdir="${test.classes.dir}"
+               debug="${compile.debug}"
+               deprecation="${compile.deprecation}"
+    	       optimize="${compile.optimize}"
+               includes="**/*.java"
+               encoding="${compile.encoding}">
+            <classpath refid="classpath" />
+        </javac>
+    </target>
+
+	<target name="test-service" depends="compile, test-compile" description="run service integration tests">
+		<junit printsummary="on"
+               fork="yes"
+               forkmode="perBatch"
+               haltonfailure="yes"
+               haltonerror="yes">
+			<jvmarg line="-Djava.awt.headless=true -Xmx256m -XX:MaxPermSize=128m" />
+			<classpath refid="classpath" />
+			<classpath location="${test.classes.dir}" />
+			<classpath location="${res.conf.dir}/misc" />
+			<classpath location="${res.conf.dir}/spring" />
+			<classpath location="${res.conf.dir}/compass" />
+		    <classpath location="${res.conf.dir}/hibernate" />
+			<formatter type="brief" usefile="false" />
+			<formatter type="xml" />
+            <batchtest todir="${test.output.dir}">
+                <fileset dir="${test.classes.dir}" includes="**/*Test.class" excludes="**/Abstract*" />
+            </batchtest>
+        </junit>
+        <junitreport todir="${test.output.dir}">
+            <fileset dir="${test.output.dir}">
+		        <include name="TEST-*.xml" />
+            </fileset>
+            <report format="frames" todir="${test.reports.dir}" />
+        </junitreport>
+	</target>
+
+	<target name="Step3-3-i18n" description="generate the i18n resource">
+		<exec dir="${res.i18n.dir}" executable="cmd">
+			<arg value="/C convert.bat"/>
+		</exec>
+	</target>
+
+	<target name="Step3-1-distribution" depends="Step3-2-build,Step3-3-i18n" description="generate the distribution">
+
+        <mkdir dir="${dist.home}/${project.system.webapp.name}" />
+        <mkdir dir="${dist.home}/${project.system.webapp.name}/WEB-INF" />
+        <mkdir dir="${dist.home}/${project.system.webapp.name}/WEB-INF/lib" />
+        <mkdir dir="${dist.home}/${project.system.webapp.name}/WEB-INF/classes" />
+        <mkdir dir="${dist.home}/${project.system.webapp.name}/WEB-INF/classes/CONF-INF" />
+        <mkdir dir="${dist.home}/${project.system.webapp.name}/WEB-INF/classes/CONF-INF/Spring" />
+    	<mkdir dir="${dist.home}/${project.system.webapp.name}/WEB-INF/classes/CONF-INF/Compass" />
+        <mkdir dir="${dist.home}/${project.system.webapp.name}/WEB-INF/classes/CONF-INF/Hibernate" />
+
+        <copy todir="${dist.home}/${project.system.webapp.name}">
+            <fileset dir="${web.home}">
+                <include name="**/**" />
+            </fileset>
+        </copy>
+
+        <copy todir="${dist.home}/${project.system.webapp.name}/WEB-INF/classes">
+            <fileset dir="${res.i18n.dir}">
+                <include name="*.*" />
+            </fileset>
+        </copy>
+
+        <copy todir="${dist.home}/${project.system.webapp.name}/WEB-INF/classes/conf">
+            <fileset dir="${res.CONF-INF.dir}">
+                <include name="*.*" />
+            </fileset>
+        </copy>
+
+        <copy todir="${dist.home}/${project.system.webapp.name}/WEB-INF/classes/conf/Spring">
+            <fileset dir="${res.CONF-INF.dir}/Spring">
+                <include name="*.*" />
+            </fileset>
+        </copy>
+
+        <copy todir="${dist.home}/${project.system.webapp.name}/WEB-INF/classes/conf/Hibernate">
+            <fileset dir="${res.CONF-INF.dir}/Hibernate">
+                <include name="*.*" />
+            </fileset>
+        </copy>
+
+        <copy todir="${dist.home}/${project.system.webapp.name}/WEB-INF/lib">
+            <fileset dir="${build.lib.dir}">
+                <include name="luna-aop.jar"/>
+                <include name="luna-coreBusiness.jar"/>
+                <include name="luna-support.jar"/>
+                <include name="luna-security.jar"/>
+                <include name="luna-webBusiness.jar"/>
+            </fileset>
+            <fileset dir="${lib.home}/runLib/asiasoft">
+                <include name="*.jar"/>
+            </fileset>
+            <fileset dir="${lib.home}/runLib/asf/commons">
+                <include name="*.jar"/>
+            </fileset>
+            <fileset dir="${lib.home}/runLib/asf/jakarta">
+                <include name="*.jar"/>
+            </fileset>
+            <fileset dir="${lib.home}/runLib/asf/logging">
+                <include name="*.jar"/>
+            </fileset>
+            <fileset dir="${lib.home}/runLib/javaee">
+                <include name="*.jar"/>
+            </fileset>
+            <fileset dir="${lib.home}/runLib/struts">
+                <include name="*.jar"/>
+            </fileset>
+            <fileset dir="${lib.home}/runLib/spring">
+                <include name="*.jar"/>
+            </fileset>
+            <fileset dir="${lib.home}/runLib/hibernate">
+                <include name="*.jar"/>
+            </fileset>
+            <fileset dir="${lib.home}/runLib/misc">
+                <include name="*.jar"/>
+            </fileset>
+            <fileset dir="${lib.home}/runLib/misc/asm">
+                <include name="*.jar"/>
+            </fileset>
+            <fileset dir="${lib.home}/runLib/misc/aspectj">
+                <include name="*.jar"/>
+            </fileset>
+            <fileset dir="${lib.home}/runLib/misc/jdbc">
+                <include name="*.jar"/>
+            </fileset>
+
+            <fileset dir="${lib.home}/runLib/compass">
+                <include name="*.jar"/>
+            </fileset>
+
+            <fileset dir="${lib.home}/runLib/jbpm">
+                <include name="*.jar"/>
+            </fileset>
+
+        	<fileset dir="${lib.home}/runLib/report">
+        	    <include name="*.jar"/>
+        	</fileset>
+        </copy>
+
+        <!-- Create the <war> file -->
+        <jar jarfile="${dist.home}/${project.system.webapp.name}.war" basedir="${dist.home}/${project.system.webapp.name}" />
+    </target>
+
+
+	<target name="deploy-war" depends="Step3-1-distribution, undeploy" >
+		<copy file="${dist.home}/${project.system.webapp.name}.war" todir="${tomcat.home}/webapps" />
+	</target>
+
+	<target name="Deploy-step3-deploy-dir" depends="Step3-1-distribution, undeploy">
+		<mkdir dir="${tomcat.home}/webapps/${project.system.webapp.name}" />
+		<copy todir="${tomcat.home}/webapps/${project.system.webapp.name}">
+			<fileset dir="${dist.home}/${project.system.webapp.name}"/>
+		</copy>
+	</target>
+
+	<target name="undeploy">
+		<delete file="${tomcat.home}/webapps/${project.system.webapp.name}.war" failonerror="false"/>
+		<delete dir="${tomcat.home}/webapps/${project.system.webapp.name}" failonerror="false"/>
+	</target>
+
+    <target name="javadoc" description="Create Javadoc API documentation">
+        <mkdir dir="${build.docs.dir}/api" />
+        <javadoc
+            packagenames="com.newzhongmei.pmi.*"
+            sourcepath="${src.java.dir}"
+            destdir="${build.docs.dir}/api"
+            author="true" version="true" use="true" Verbose="false"
+            windowtitle="${project.name} Component API"
+            stylesheetfile="${docs.style.dir}/stylesheet.css"
+            doctitle="${project.name} Component"
+            bottom="Copyright &#169; 2010 Newzhongmei Institute Limited. All Rights Reserved.">
+            <classpath refid="classpath"/>
+            <fileset dir="src" defaultexcludes="yes">
+                <include name="com/newzhongmei/pmi/**" />
+            </fileset>
+        </javadoc>
+    </target>
+
+    <target name="export-dbschema-supplierManagement" depends="compile">
+        <echo message="Generating the appropriate SQL DDL... Store the result in a file or export it directly to the database." />
+        <taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask">
+            <classpath refid="classpath" />
+        </taskdef>
+        <taskdef name="annotationconfiguration" classname="org.hibernate.tool.ant.AnnotationConfigurationTask">
+            <classpath refid="classpath" />
+        </taskdef>
+        <delete dir="${build.sql.dir}" />
+        <delete dir="${build.docs.dir}/dbschema" />
+        <mkdir dir="${build.sql.dir}" />
+        <mkdir dir="${build.docs.dir}/dbschema" />
+        <hibernatetool destdir="${build.sql.dir}">
+            <classpath refid="classpath" />
+            <annotationconfiguration configurationfile="${res.make.dir}/hibernate-supplierManagement.cfg.xml" />
+            <hbm2ddl
+                export="true"
+                update="false"
+                drop="true"
+                create="true"
+                delimiter=";"
+                outputfilename="db_table_schema_supplierManagement.sql"
+                format="true"
+                haltonerror="false">
+            </hbm2ddl>
+            <hbm2doc destdir="${build.docs.dir}/dbschema" />
+        </hibernatetool>
+    </target>
+    <target name="export-dbschema-staffManagement" depends="compile">
+        <echo message="Generating the appropriate SQL DDL... Store the result in a file or export it directly to the database." />
+        <taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask">
+            <classpath refid="classpath" />
+        </taskdef>
+        <taskdef name="annotationconfiguration" classname="org.hibernate.tool.ant.AnnotationConfigurationTask">
+            <classpath refid="classpath" />
+        </taskdef>
+        <delete dir="${build.sql.dir}" />
+        <delete dir="${build.docs.dir}/dbschema" />
+        <mkdir dir="${build.sql.dir}" />
+        <mkdir dir="${build.docs.dir}/dbschema" />
+        <hibernatetool destdir="${build.sql.dir}">
+            <classpath refid="classpath" />
+            <annotationconfiguration configurationfile="${res.make.dir}/hibernate-staffManagement.cfg.xml" />
+            <hbm2ddl
+                export="true"
+                update="false"
+                drop="true"
+                create="true"
+                delimiter=";"
+                outputfilename="db_table_schema_staffManagement.sql"
+                format="true"
+                haltonerror="false">
+            </hbm2ddl>
+            <hbm2doc destdir="${build.docs.dir}/dbschema" />
+        </hibernatetool>
+    </target>
+
+    <target name="export-dbschema-materialManagement" depends="compile">
+        <echo message="Generating the appropriate SQL DDL... Store the result in a file or export it directly to the database." />
+        <taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask">
+            <classpath refid="classpath" />
+        </taskdef>
+        <taskdef name="annotationconfiguration" classname="org.hibernate.tool.ant.AnnotationConfigurationTask">
+            <classpath refid="classpath" />
+        </taskdef>
+        <delete dir="${build.sql.dir}" />
+        <delete dir="${build.docs.dir}/dbschema" />
+        <mkdir dir="${build.sql.dir}" />
+        <mkdir dir="${build.docs.dir}/dbschema" />
+        <hibernatetool destdir="${build.sql.dir}">
+            <classpath refid="classpath" />
+            <annotationconfiguration configurationfile="${res.make.dir}/hibernate-materialManagement.cfg.xml" />
+            <hbm2ddl
+                export="true"
+                update="false"
+                drop="true"
+                create="true"
+                delimiter=";"
+                outputfilename="db_table_schema_materialManagement.sql"
+                format="true"
+                haltonerror="false">
+            </hbm2ddl>
+            <hbm2doc destdir="${build.docs.dir}/dbschema" />
+        </hibernatetool>
+    </target>
+    <target name="export-dbschema-equipmentManagement" depends="compile">
+        <echo message="Generating the appropriate SQL DDL... Store the result in a file or export it directly to the database." />
+        <taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask">
+            <classpath refid="classpath" />
+        </taskdef>
+        <taskdef name="annotationconfiguration" classname="org.hibernate.tool.ant.AnnotationConfigurationTask">
+            <classpath refid="classpath" />
+        </taskdef>
+        <delete dir="${build.sql.dir}" />
+        <delete dir="${build.docs.dir}/dbschema" />
+        <mkdir dir="${build.sql.dir}" />
+        <mkdir dir="${build.docs.dir}/dbschema" />
+        <hibernatetool destdir="${build.sql.dir}">
+            <classpath refid="classpath" />
+            <annotationconfiguration configurationfile="${res.make.dir}/hibernate-equipmentManagement.cfg.xml" />
+            <hbm2ddl
+                export="true"
+                update="false"
+                drop="true"
+                create="true"
+                delimiter=";"
+                outputfilename="db_table_schema_equipmentManagement.sql"
+                format="true"
+                haltonerror="false">
+            </hbm2ddl>
+            <hbm2doc destdir="${build.docs.dir}/dbschema" />
+        </hibernatetool>
+    </target>
+    <target name="export-dbschema-qualityInspectionManagement" depends="compile">
+        <echo message="Generating the appropriate SQL DDL... Store the result in a file or export it directly to the database." />
+        <taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask">
+            <classpath refid="classpath" />
+        </taskdef>
+        <taskdef name="annotationconfiguration" classname="org.hibernate.tool.ant.AnnotationConfigurationTask">
+            <classpath refid="classpath" />
+        </taskdef>
+        <delete dir="${build.sql.dir}" />
+        <delete dir="${build.docs.dir}/dbschema" />
+        <mkdir dir="${build.sql.dir}" />
+        <mkdir dir="${build.docs.dir}/dbschema" />
+        <hibernatetool destdir="${build.sql.dir}">
+            <classpath refid="classpath" />
+            <annotationconfiguration configurationfile="${res.make.dir}/hibernate-qualityInspectionManagement.cfg.xml" />
+            <hbm2ddl
+                export="true"
+                update="false"
+                drop="true"
+                create="true"
+                delimiter=";"
+                outputfilename="db_table_schema_qualityInspectionManagement.sql"
+                format="true"
+                haltonerror="false">
+            </hbm2ddl>
+            <hbm2doc destdir="${build.docs.dir}/dbschema" />
+        </hibernatetool>
+    </target>
+
+    <target name="export-dbschema-materialBalanceManagement" depends="compile">
+        <echo message="Generating the appropriate SQL DDL... Store the result in a file or export it directly to the database." />
+        <taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask">
+            <classpath refid="classpath" />
+        </taskdef>
+        <taskdef name="annotationconfiguration" classname="org.hibernate.tool.ant.AnnotationConfigurationTask">
+            <classpath refid="classpath" />
+        </taskdef>
+        <delete dir="${build.sql.dir}" />
+        <delete dir="${build.docs.dir}/dbschema" />
+        <mkdir dir="${build.sql.dir}" />
+        <mkdir dir="${build.docs.dir}/dbschema" />
+        <hibernatetool destdir="${build.sql.dir}">
+            <classpath refid="classpath" />
+            <annotationconfiguration configurationfile="${res.make.dir}/hibernate-materialBalanceManagement.cfg.xml" />
+            <hbm2ddl
+                export="true"
+                update="false"
+                drop="true"
+                create="true"
+                delimiter=";"
+                outputfilename="db_table_schema_materialBalanceManagement.sql"
+                format="true"
+                haltonerror="false">
+            </hbm2ddl>
+            <hbm2doc destdir="${build.docs.dir}/dbschema" />
+        </hibernatetool>
+    </target>
+    <target name="export-dbschema-systemManagement" depends="compile">
+        <echo message="Generating the appropriate SQL DDL... Store the result in a file or export it directly to the database." />
+        <taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask">
+            <classpath refid="classpath" />
+        </taskdef>
+        <taskdef name="annotationconfiguration" classname="org.hibernate.tool.ant.AnnotationConfigurationTask">
+            <classpath refid="classpath" />
+        </taskdef>
+        <delete dir="${build.sql.dir}" />
+        <delete dir="${build.docs.dir}/dbschema" />
+        <mkdir dir="${build.sql.dir}" />
+        <mkdir dir="${build.docs.dir}/dbschema" />
+        <hibernatetool destdir="${build.sql.dir}">
+            <classpath refid="classpath" />
+            <annotationconfiguration configurationfile="${res.make.dir}/hibernate-systemManagement.cfg.xml" />
+            <hbm2ddl
+                export="true"
+                update="false"
+                drop="true"
+                create="true"
+                delimiter=";"
+                outputfilename="db_table_schema_systemManagement.sql"
+                format="true"
+                haltonerror="false">
+            </hbm2ddl>
+            <hbm2doc destdir="${build.docs.dir}/dbschema" />
+        </hibernatetool>
+    </target>
+
+	<!-- For Microsoft SQL Server 2000
+	src="${res.sql.dir}/db_systemManagementTable_init.sql"
+	src="${res.sql.dir}/db_materialBalanceManagementTable_init.sql"-->
+	<target name="initialize-supplierManagement" depends="export-dbschema-supplierManagement">
+		<echo message=""></echo>
+		<sql
+			driver="net.sourceforge.jtds.jdbc.Driver"
+            url="jdbc:jtds:sqlserver://127.0.0.1:1433;DatabaseName=pmi"
+            userid="root"
+            password="root"
+			src="${res.sql.dir}/db_supplierManagementTable_init.sql"
+        	encoding="UTF-8"
+            onerror="continue">
+		  <classpath refid="classpath"></classpath>
+		</sql>
+	</target>
+	<target name="initialize-staffManagement" depends="export-dbschema-staffManagement">
+		<echo message=""></echo>
+		<sql
+			driver="net.sourceforge.jtds.jdbc.Driver"
+            url="jdbc:jtds:sqlserver://127.0.0.1:1433;DatabaseName=pmi"
+            userid="root"
+            password="root"
+			src="${res.sql.dir}/db_staffManagementTable_init.sql"
+        	encoding="UTF-8"
+            onerror="continue">
+		  <classpath refid="classpath"></classpath>
+		</sql>
+	</target>
+	<target name="initialize-materialManagement" depends="export-dbschema-materialManagement">
+		<echo message=""></echo>
+		<sql
+			driver="net.sourceforge.jtds.jdbc.Driver"
+            url="jdbc:jtds:sqlserver://127.0.0.1:1433;DatabaseName=pmi"
+            userid="root"
+            password="root"
+			src="${res.sql.dir}/db_materialManagementTable_init.sql"
+        	encoding="UTF-8"
+            onerror="continue">
+		  <classpath refid="classpath"></classpath>
+		</sql>
+	</target>
+	<target name="initialize-equipmentManagement" depends="export-dbschema-equipmentManagement">
+		<echo message=""></echo>
+		<sql
+			driver="net.sourceforge.jtds.jdbc.Driver"
+            url="jdbc:jtds:sqlserver://127.0.0.1:1433;DatabaseName=pmi"
+            userid="root"
+            password="root"
+			src="${res.sql.dir}/db_equipmentManagementTable_init.sql"
+        	encoding="UTF-8"
+            onerror="continue">
+		  <classpath refid="classpath"></classpath>
+		</sql>
+	</target>
+	<target name="initialize-qualityInspectionManagement" depends="export-dbschema-qualityInspectionManagement">
+		<echo message=""></echo>
+		<sql
+			driver="net.sourceforge.jtds.jdbc.Driver"
+            url="jdbc:jtds:sqlserver://127.0.0.1:1433;DatabaseName=pmi"
+            userid="root"
+            password="root"
+			src="${res.sql.dir}/db_qualityInspectionManagementTable_init.sql"
+        	encoding="UTF-8"
+            onerror="continue">
+		  <classpath refid="classpath"></classpath>
+		</sql>
+	</target>
+
+	<target name="initialize-materialBalanceManagement" depends="export-dbschema-materialBalanceManagement">
+		<echo message=""></echo>
+		<sql
+			driver="net.sourceforge.jtds.jdbc.Driver"
+            url="jdbc:jtds:sqlserver://127.0.0.1:1433;DatabaseName=pmi"
+            userid="root"
+            password="root"
+			src="${res.sql.dir}/db_materialBalanceManagementTable_init.sql"
+        	encoding="UTF-8"
+            onerror="continue">
+		  <classpath refid="classpath"></classpath>
+		</sql>
+	</target>
+	<target name="initialize-systemManagement" depends="export-dbschema-systemManagement">
+        <echo message="Initializing database... If error occurs,let it be." />
+        <sql
+        	driver="net.sourceforge.jtds.jdbc.Driver"
+            url="jdbc:jtds:sqlserver://127.0.0.1:1433;DatabaseName=pmi"
+            userid="root"
+            password="root"
+        	src="${res.sql.dir}/db_systemManagementTable_init.sql"
+        	encoding="UTF-8"
+            onerror="continue">
+          <classpath refid="classpath"/>
+        </sql>
+	</target>
+
+    <!-- For MySQL -->
+	<!--<target name="initialize-database" depends="export-dbschema">
+        <echo message="Initializing database... If error occurs,let it be." />
+        <sql
+        	driver="com.mysql.jdbc.Driver"
+            url="jdbc:mysql://localhost/pmi"
+            userid="root"
+            password="root"
+            src="${res.sql.dir}/db_table_init.sql"
+        	encoding="UTF-8"
+            onerror="continue">
+          <classpath refid="classpath"/>
+        </sql>
+    </target> -->
+
+    <!-- For Oracle -->
+	<!--<target name="initialize-database" depends="export-dbschema">
+        <echo message="Initializing database... If error occurs,let it be." />
+        <sql
+            driver="oracle.jdbc.driver.OracleDriver"
+            url="jdbc:oracle:thin:@localhost:1521:xe"
+            userid="pmi"
+            password="pmi"
+            src="${res.sql.dir}/db_table_init.sql"
+            encoding="UTF-8"
+            onerror="continue">
+          <classpath refid="classpath"/>
+        </sql>
+    </target>-->
+
+    <target name="Deploy-step1-startAntCommand">
+        <echo>${company.name}</echo>
+		<echo>    Building ${project.system.name}  Starting...    </echo>
+        <echo>+-------------------------------------------+</echo>
+    </target>
+
+    <target name="Deploy-step4-endAntCommand">
+        <echo>+-------------------------------------------+</echo>
+        <echo>    Finished ${project.system.name}  Successful!!!  </echo>
+        <echo>${company.name}</echo>
+    </target>
+
+	<target name="all" depends="Deploy-step1-startAntCommand, check-step3-init , Deploy-step3-deploy-dir, Deploy-step4-endAntCommand" description="execute the all targets"/>
+
+	<!-- <target name="all" depends="startbanner, initialize-database, test-service, endbanner" description="execute the all targets"/> -->
+</project>

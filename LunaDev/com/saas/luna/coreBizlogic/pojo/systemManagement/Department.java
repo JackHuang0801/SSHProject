@@ -1,7 +1,7 @@
 /*
  * Department.java
  * com.newzhongmei.pmi.coreBusiness.entity.systemManagement
- * 
+ *
  * Copyright (c) 2010 Jack Huang Limited. All Rights Reserved.
  */
 package com.saas.luna.coreBizlogic.pojo.systemManagement;
@@ -17,19 +17,19 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.asiasoft.javaee.core.entity.BaseDomainEntity;
+import com.saas.luna.JackFramework.core.pojo.BaseDomainPojo;
 
 /**
  * @author <a href="mailto:704401701@qq.com">Jack Huang</a>
- * 
+ *
  * @version V1.00 2010-5-2 下午10:08:45
  */
 @Entity
 @Table(name = "T_department")
-public class Department extends BaseDomainEntity<Long> {
+public class Department extends BaseDomainPojo<Long> {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 9185200321530821289L;
 
@@ -122,7 +122,7 @@ public class Department extends BaseDomainEntity<Long> {
 	public void setLocation(String location) {
 		this.location = location;
 	}
-	
+
 	public String toString() {
 		StringBuffer toString = new StringBuffer();
 
@@ -139,10 +139,10 @@ public class Department extends BaseDomainEntity<Long> {
 
 		toString.append("\nphonet = ");
 		toString.append(phone);
-		
+
 		toString.append("\nfax");
 		toString.append(fax);
-		
+
 		toString.append("\nlocation");
 		toString.append(location);
 
