@@ -17,21 +17,25 @@
 	<property file="build.properties" />
 
 	<property environment="env"/>
-	<property name="jdk.home" value="${env.JAVA_HOME}" />
-	<!--<property name="tomcat.home" value="${env.TOMCAT_HOME}" />-->
+	<property name="jdk.home" value="I:\Java\jdk1.8.0_45" />
+	<!--
+		<property name="tomcat.home" value="${env.TOMCAT_HOME}" />
+	-->
 	<property name="tomcat.home" value="I:\apache-tomcat-8.0.22" />
 
 	<property name="src.home"   value="${basedir}/${src.home}" />
 	<property name="lib.home"   value="${basedir}/${lib.home}" />
-	<property name="res.home"   value="${basedir}/${res.home}" />
 	<property name="web.home"   value="${basedir}/${web.home}" />
 	<property name="docs.home"  value="${basedir}/${docs.home}" />
 	<property name="build.home" value="${basedir}/${build.home}" />
 	<property name="dist.home"  value="${basedir}/${dist.home}" />
 	<property name="test.home"  value="${basedir}/${test.home}" />
 
+	<property name="res.dir" value="${basedir}/${res.home}"></property>
+
 	<!--<property name="src.java.dir"      value="${src.home}/java" /> -->
     <property name="res.conf.dir"      value="${res.home}/CONF-INF" />
+	<property name="res.lib.dir"      value="${res.dir}/lib/devLib" />
     <property name="res.i18n.dir"      value="${res.home}/i18n" />
 	<property name="res.sql.dir"       value="${res.home}/sql" />
     <property name="res.make.dir"      value="${res.home}/make" />
@@ -67,10 +71,10 @@
         <fileset dir="${tomcat.home}">
             <include name="lib/**/*.jar"/>
 		</fileset>
+		<!--
         <fileset dir="lib">
             <include name="**/*.jar"/>
         </fileset>
-		<!--
 		<fileset dir="${lib.home}">
 			<include name="**/*.jar"/>
 		</fileset>
@@ -84,10 +88,73 @@
 		<pathelement location="${lib.home}/lib/devLib/hibernate-release-4.3.10.Final/*.jar"/>
 		<pathelement location="${lib.home}/lib/devLib/spring-security-4.0.1.RELEASE/*.jar"/>
 		<pathelement location="${lib.home}/lib/devLib/struts2-2.3.24/*.jar"/>
+		<pathelement location="I:/workspace/SSHProject/ProjectContent/lib/devLib/**/*.jar"/>
+	    <fileset dir="I:/workspace/SSHProject/lib/runtime">
+	    	<include name="**/*.jar"/>
+		</fileset>
+		<pathelement path="${res.lib.dir}/hibernate-release-4.3.10.Final/hibernate-jpa-2.1-api-1.0.0.Final.jar" />
+		<pathelement path="${res.lib.dir}/hibernate-release-4.3.10.Final/hibernate-core-4.3.10.Final.jar" />
+		<pathelement path="${res.lib.dir}/hibernate-release-4.3.10.Final/hibernate-commons-annotations-4.0.5.Final.jar" />
+		<pathelement path="${res.lib.dir}/hibernate-release-4.3.10.Final/hibernate-ehcache-4.3.10.Final.jar" />
 		-->
-		<pathelement location="${lib.home}/lib/devLib/**/*.jar"/>
+
+			<pathelement path="${res.lib.dir}/struts2-2.3.24/antlr-2.7.2.jar"/>
+			<pathelement path="${res.lib.dir}/struts2-2.3.24/aopalliance-1.0.jar"/>
+			<pathelement path="${res.lib.dir}/struts2-2.3.24/asm-3.3.jar"/>
+			<pathelement path="${res.lib.dir}/struts2-2.3.24/asm-commons-3.3.jar"/>
+			<pathelement path="${res.lib.dir}/struts2-2.3.24/commons-beanutils-1.8.0.jar"/>
+			<pathelement path="${res.lib.dir}/struts2-2.3.24/commons-collections-3.1.jar"/>
+			<pathelement path="${res.lib.dir}/struts2-2.3.24/commons-fileupload-1.3.1.jar"/>
+			<pathelement path="${res.lib.dir}/struts2-2.3.24/commons-io-2.2.jar"/>
+			<pathelement path="${res.lib.dir}/struts2-2.3.24/commons-lang-2.4.jar"/>
+			<pathelement path="${res.lib.dir}/struts2-2.3.24/commons-lang3-3.2.jar"/>
+			<pathelement path="${res.lib.dir}/struts2-2.3.24/commons-logging-1.1.3.jar"/>
+			<pathelement path="${res.lib.dir}/struts2-2.3.24/ezmorph-1.0.6.jar"/>
+			<pathelement path="${res.lib.dir}/struts2-2.3.24/freemarker-2.3.22.jar"/>
+			<pathelement path="${res.lib.dir}/struts2-2.3.24/javassist-3.11.0.GA.jar"/>
+			<pathelement path="${res.lib.dir}/struts2-2.3.24/struts2-core-2.3.24.jar"/>
+			<pathelement path="${res.lib.dir}/struts2-2.3.24/struts2-spring-plugin-2.3.24.jar"/>
+			<pathelement path="${res.lib.dir}/struts2-2.3.24/xwork-core-2.3.24.jar"/>
+			<pathelement path="${res.lib.dir}/hibernate-release-4.3.10.Final/antlr-2.7.7.jar"/>
+			<pathelement path="${res.lib.dir}/hibernate-release-4.3.10.Final/c3p0-0.9.2.1.jar"/>
+			<pathelement path="${res.lib.dir}/hibernate-release-4.3.10.Final/dom4j-1.6.1.jar"/>
+			<pathelement path="${res.lib.dir}/hibernate-release-4.3.10.Final/ehcache-core-2.4.3.jar"/>
+			<pathelement path="${res.lib.dir}/hibernate-release-4.3.10.Final/hibernate-c3p0-4.3.10.Final.jar"/>
+			<pathelement path="${res.lib.dir}/hibernate-release-4.3.10.Final/hibernate-commons-annotations-4.0.5.Final.jar"/>
+			<pathelement path="${res.lib.dir}/hibernate-release-4.3.10.Final/hibernate-core-4.3.10.Final.jar"/>
+			<pathelement path="${res.lib.dir}/hibernate-release-4.3.10.Final/hibernate-ehcache-4.3.10.Final.jar"/>
+			<pathelement path="${res.lib.dir}/hibernate-release-4.3.10.Final/hibernate-jpa-2.1-api-1.0.0.Final.jar"/>
+			<pathelement path="${res.lib.dir}/hibernate-release-4.3.10.Final/jandex-1.1.0.Final.jar"/>
+			<pathelement path="${res.lib.dir}/hibernate-release-4.3.10.Final/javassist-3.18.1-GA.jar"/>
+			<pathelement path="${res.lib.dir}/hibernate-release-4.3.10.Final/jboss-logging-3.1.3.GA.jar"/>
+			<pathelement path="${res.lib.dir}/hibernate-release-4.3.10.Final/jboss-logging-annotations-1.2.0.Beta1.jar"/>
+			<pathelement path="${res.lib.dir}/hibernate-release-4.3.10.Final/jboss-transaction-api_1.2_spec-1.0.0.Final.jar"/>
+			<pathelement path="${res.lib.dir}/hibernate-release-4.3.10.Final/mchange-commons-java-0.2.3.4.jar"/>
+			<pathelement path="${res.lib.dir}/hibernate-release-4.3.10.Final/slf4j-api-1.6.1.jar"/>
+			<pathelement path="${res.lib.dir}/spring-framework-4.2.0.RC1/spring-aop-4.2.0.RC1.jar"/>
+			<pathelement path="${res.lib.dir}/spring-framework-4.2.0.RC1/spring-beans-4.2.0.RC1.jar"/>
+			<pathelement path="${res.lib.dir}/spring-framework-4.2.0.RC1/spring-context-4.2.0.RC1.jar"/>
+			<pathelement path="${res.lib.dir}/spring-framework-4.2.0.RC1/spring-core-4.2.0.RC1.jar"/>
+			<pathelement path="${res.lib.dir}/spring-framework-4.2.0.RC1/spring-tx-4.2.0.RC1.jar"/>
+			<pathelement path="${res.lib.dir}/spring-security-2.0.5.RELEASE/spring-security-acl-2.0.5.RELEASE.jar"/>
+			<pathelement path="${res.lib.dir}/spring-security-2.0.5.RELEASE/spring-security-cas-client-2.0.5.RELEASE.jar"/>
+			<pathelement path="${res.lib.dir}/spring-security-2.0.5.RELEASE/spring-security-core-2.0.5.RELEASE.jar"/>
+			<pathelement path="${res.lib.dir}/spring-security-2.0.5.RELEASE/spring-security-core-tiger-2.0.5.RELEASE.jar"/>
+			<pathelement path="${res.lib.dir}/spring-security-2.0.5.RELEASE/spring-security-ntlm-2.0.5.RELEASE.jar.jar"/>
+			<pathelement path="${res.lib.dir}/spring-security-2.0.5.RELEASE/spring-security-openid-2.0.5.RELEASE.jar"/>
+			<pathelement path="${res.lib.dir}/spring-security-2.0.5.RELEASE/spring-security-portlet-2.0.5.RELEASE.jar"/>
+			<pathelement path="${res.lib.dir}/spring-security-2.0.5.RELEASE/spring-security-taglibs-2.0.5.RELEASE.jar"/>
+
 	</path>
 
+	<path id="compile-classpath">
+        <pathelement location="${jdk.home}/lib/dt.jar"/>
+        <pathelement location="${jdk.home}/lib/tools.jar"/>
+		<pathelement location="${jdk.home}/jre/lib/rt.jar"/>
+		<fileset dir="I:/workspace/SSHProject/WebContent/WEB-INF/lib">
+		         <include name="**/*.jar"/>
+		</fileset>
+	</path>
 
 	<!-- ===================== Ivy target: resolve =========================== -->
 	<ivy:settings file="ivysettings.xml" />
@@ -131,6 +198,20 @@
 	</target>
 
 	<target name="prepare" depends="clean" description="preparation steps can be placed here">
+  	<!-- ===================== echo all lib home ====================================== -->
+	    <echo message=""/>
+		<echo message="jdk.home: 	${env.JAVA_HOME}"/>
+	    <echo message="jdk.home: 	${jdk.home}"/>
+	    <echo message="tomcat.home: ${tomcat.home}"/>
+
+		<echo message="src.home: ${basedir}/${src.home}"/>
+		<echo message="lib.home: ${basedir}/${lib.home}"/>
+	    <echo message="res.home: ${basedir}/${res.home}"/>
+	    <echo message="web.home: ${basedir}/${web.home}"/>
+	    <echo message="docs.home: ${basedir}/${docs.home}"/>
+	    <echo message="build.home: ${basedir}/${build.home}"/>
+		<echo message="dist.home: ${basedir}/${dist.home}"/>
+		<echo message="res.lib.dir: ${res.lib.dir}"/>
 	</target>
 
 	<target name="compile" depends="prepare" description="compile the source" >
@@ -143,7 +224,7 @@
 			optimize="${compile.optimize}"
 			includes="**/*.java"
 			encoding="${compile.encoding}">
-			<classpath refid="classpath" />
+			<classpath refid="compile-classpath" />
 		</javac>
 	</target>
 
