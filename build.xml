@@ -150,10 +150,17 @@
 	<path id="compile-classpath">
         <pathelement location="${jdk.home}/lib/dt.jar"/>
         <pathelement location="${jdk.home}/lib/tools.jar"/>
-		<pathelement location="${jdk.home}/jre/lib/rt.jar"/>
+
+		<!-- 引用第三方jar包 -->
+		<pathelement path="${basedir}/ProjectContent/lib/devLib/struts2-2.3.24/commons-beanutils-1.8.0.jar"/>
+		<pathelement path="${basedir}/ProjectContent/lib/devLib/hibernate-release-4.3.10.Final/hibernate-core-4.3.10.Final.jar"/>
+		<pathelement path="${basedir}/ProjectContent/lib/devLib/hibernate-release-4.3.10.Final/hibernate-jpa-2.1-api-1.0.0.Final.jar"/>
+		<!--
+		<pathelement path="${res.lib.dir}/spring-security-2.0.5.RELEASE/spring-security-taglibs-2.0.5.RELEASE.jar"/>
 		<fileset dir="I:/workspace/SSHProject/WebContent/WEB-INF/lib">
 		         <include name="**/*.jar"/>
 		</fileset>
+		-->
 	</path>
 
 	<!-- ===================== Ivy target: resolve =========================== -->
@@ -200,7 +207,7 @@
 	<target name="prepare" depends="clean" description="preparation steps can be placed here">
   	<!-- ===================== echo all lib home ====================================== -->
 	    <echo message=""/>
-		<echo message="jdk.home: 	${env.JAVA_HOME}"/>
+		<echo message="JAVA_HOME: 	${env.JAVA_HOME}"/>
 	    <echo message="jdk.home: 	${jdk.home}"/>
 	    <echo message="tomcat.home: ${tomcat.home}"/>
 
@@ -211,19 +218,23 @@
 	    <echo message="docs.home: ${basedir}/${docs.home}"/>
 	    <echo message="build.home: ${basedir}/${build.home}"/>
 		<echo message="dist.home: ${basedir}/${dist.home}"/>
-		<echo message="res.lib.dir: ${res.lib.dir}"/>
+		<echo message="basedir: ${basedir}"/>
 	</target>
 
 	<target name="compile" depends="prepare" description="compile the source" >
 		<mkdir dir="${build.home}" />
 		<mkdir dir="${build.classes.dir}" />
+		<!-- 用Ant来编译java时使用的JDK
+			 fork="true" executable="C:\Program Files (x86)\Java\jdk1.8.0_45\bin\javac"
+		-->
 		<javac srcdir="${src.home}"
 			destdir="${build.classes.dir}"
 			debug="${compile.debug}"
 			deprecation="${compile.deprecation}"
 			optimize="${compile.optimize}"
 			includes="**/*.java"
-			encoding="${compile.encoding}">
+			encoding="${compile.encoding}"
+			>
 			<classpath refid="compile-classpath" />
 		</javac>
 	</target>
