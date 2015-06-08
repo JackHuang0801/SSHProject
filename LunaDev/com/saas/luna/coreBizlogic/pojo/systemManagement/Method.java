@@ -1,7 +1,7 @@
 /*
  * Mehtod.java
  * com.newzhongmei.pmi.coreBusiness.entity.systemManagement
- * 
+ *
  * Copyright (c) 2010 Jack Huang Limited. All Rights Reserved.
  */
 package com.saas.luna.coreBizlogic.pojo.systemManagement;
@@ -19,7 +19,7 @@ import javax.persistence.OneToMany;
 
 /**
  * @author <a href="mailto:704401701@qq.com">Jack Huang</a>
- * 
+ *
  * @version V1.00 2010-5-19 下�?�05:00:24
  */
 @Entity
@@ -27,8 +27,9 @@ import javax.persistence.OneToMany;
 public class Method extends Resource {
 
 	/**
-	 * 
+	 *
 	 */
+	@SuppressWarnings("unused")
 	private static final long serialVersionUID = -2741053843178003448L;
 
 	private Url url;

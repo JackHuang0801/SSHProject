@@ -8,8 +8,13 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="ProjectContent/lib/devLib/struts2-2.3.24/commons-beanutils-1.8.0.jar"/>
-	<classpathentry kind="lib" path="ProjectContent/lib/devLib/hibernate-release-4.3.10.Final/hibernate-jpa-2.1-api-1.0.0.Final.jar"/>
-	<classpathentry kind="lib" path="ProjectContent/lib/devLib/hibernate-release-4.3.10.Final/hibernate-core-4.3.10.Final.jar"/>
+	<classpathentry kind="lib" path="ProjectContent/lib/devLib/spring-security-2.0.5.RELEASE/spring-security-acl-2.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="ProjectContent/lib/devLib/spring-security-2.0.5.RELEASE/spring-security-cas-client-2.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="ProjectContent/lib/devLib/spring-security-2.0.5.RELEASE/spring-security-core-2.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="ProjectContent/lib/devLib/spring-security-2.0.5.RELEASE/spring-security-core-tiger-2.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="ProjectContent/lib/devLib/spring-security-2.0.5.RELEASE/spring-security-ntlm-2.0.5.RELEASE.jar.jar"/>
+	<classpathentry kind="lib" path="ProjectContent/lib/devLib/spring-security-2.0.5.RELEASE/spring-security-openid-2.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="ProjectContent/lib/devLib/spring-security-2.0.5.RELEASE/spring-security-portlet-2.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="ProjectContent/lib/devLib/spring-security-2.0.5.RELEASE/spring-security-taglibs-2.0.5.RELEASE.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

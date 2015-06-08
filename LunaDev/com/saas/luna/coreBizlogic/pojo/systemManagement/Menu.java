@@ -1,7 +1,7 @@
 /*
  * Menu.java
  * com.newzhongmei.pmi.coreBusiness.entity.systemManagement
- * 
+ *
  * Copyright (c) 2010 Jack Huang Limited. All Rights Reserved.
  */
 package com.saas.luna.coreBizlogic.pojo.systemManagement;
@@ -27,12 +27,13 @@ import javax.persistence.OneToMany;
 public class Menu extends Resource {
 
 	/**
-	 * 
+	 *
 	 */
+	@SuppressWarnings("unused")
 	private static final long serialVersionUID = -7385548643559958255L;
-	
+
 	private Menu parentMenu;
-	
+
 	private Set<Menu> subMenus= new HashSet<Menu>();
 
 	@ManyToOne
@@ -55,5 +56,5 @@ public class Menu extends Resource {
 	public void setSubMenus(Set<Menu> subMenus) {
 		this.subMenus = subMenus;
 	}
-	
+
 }

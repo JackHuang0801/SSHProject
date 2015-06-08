@@ -42,6 +42,7 @@ public class Resource {
 	/**
 	 *
 	 */
+	@SuppressWarnings("unused")
 	private static final long serialVersionUID = 4598229086719103918L;
 
 	private Long id;
