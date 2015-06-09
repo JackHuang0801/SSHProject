@@ -15,7 +15,9 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import com.newzhongmei.pmi.coreBusiness.service.systemManagement.IUserService;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import com.saas.luna.coreBizlogic.sevice.systemMaster.UserService;
 
 /**
  * ClassName:ServletContextLoaderListener
@@ -29,7 +31,7 @@ public class ServletContextLoaderListener implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent servletContextEvent) {
 		ServletContext servletContext = servletContextEvent.getServletContext();
-		IUserService userService = this.getUserService(servletContext);
+		UserService userService = this.getUserService(servletContext);
 
 		Map<String, String> urlAuthorities = userService.loadUrlAuthorities();
 		servletContext.setAttribute("urlAuthorities", urlAuthorities);
@@ -50,8 +52,8 @@ public class ServletContextLoaderListener implements ServletContextListener {
 	 * @param servletContext
 	 * @return
 	 */
-	protected IUserService getUserService(ServletContext servletContext) {
-		return (IUserService) WebApplicationContextUtils.getWebApplicationContext(servletContext).getBean(
+	protected UserService getUserService(ServletContext servletContext) {
+		return (UserService) WebApplicationContextUtils.getWebApplicationContext(servletContext).getBean(
 				"userService");
 	}
 }

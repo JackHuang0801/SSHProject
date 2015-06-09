@@ -1,0 +1,44 @@
+/**
+ * Project Name:SSHProject
+ * File Name:UserService.java
+ * Package Name:com.saas.luna.coreBizlogic.sevice.systemMaster
+ * Date:2015年6月9日下午10:23:23
+ * Copyright (c) 2015, yehuang.happy@163.com All Rights Reserved.
+ *
+*/
+
+package com.saas.luna.coreBizlogic.sevice.systemMaster;
+
+import java.util.List;
+
+import org.springframework.dao.DataAccessException;
+import org.springframework.security.userdetails.UserDetails;
+import org.springframework.security.userdetails.UserDetailsService;
+import org.springframework.security.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+import com.saas.luna.coreBizlogic.pojo.systemMaster.User;
+
+/**
+ * ClassName:UserService
+ * Date:     2015年6月9日 下午10:23:23
+ * @author   Jack.Huang
+ * @version  V1.0
+ * @since    JDK 1.8.0_45
+ */
+//不建议使用Spring的第三方注解,建议其配置用xml实现
+@Service(value = "userService")
+public class UserService implements UserDetailsService {
+
+	@Override
+	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException, DataAccessException {
+		System.out.println("\nExecute method loadUserByUsername -> " + userName);
+//		List<User> usersList = userDAO.findUserByUsername(userName);
+		List<User> usersList = null;
+		if (usersList.isEmpty()) {
+			throw new UsernameNotFoundException("User：" + userName + " has no GrantedAuthority");
+		}
+		return usersList.get(0);
+	}
+}
+

@@ -4,7 +4,7 @@
  *
  * Copyright (c) 2010 Jack Huang Limited. All Rights Reserved.
  */
-package com.saas.luna.coreBizlogic.pojo.systemManagement;
+package com.saas.luna.coreBizlogic.pojo.systemMaster;
 
 import java.util.HashSet;
 import java.util.Set;

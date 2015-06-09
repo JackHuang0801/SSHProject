@@ -4,7 +4,7 @@
  *
  * Copyright (c) 2010 Jack Huang Limited. All Rights Reserved.
  */
-package com.saas.luna.coreBizlogic.pojo.systemManagement;
+package com.saas.luna.coreBizlogic.pojo.systemMaster;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -53,7 +53,7 @@ public class Role extends BaseDomainPojo<Long> {
 
 	private Set<Resource> resources = new HashSet<Resource>();
 
-	@ManyToMany(fetch = FetchType.EAGER, targetEntity = com.saas.luna.coreBizlogic.pojo.systemManagement.Resource.class, cascade = {
+	@ManyToMany(fetch = FetchType.EAGER, targetEntity = com.saas.luna.coreBizlogic.pojo.systemMaster.Resource.class, cascade = {
 			CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinTable(name = "Role_Resource", joinColumns = @JoinColumn(name = "ROLE_ID"), inverseJoinColumns = @JoinColumn(name = "RESOURCE_ID"))
 	public Set<Resource> getResources() {
