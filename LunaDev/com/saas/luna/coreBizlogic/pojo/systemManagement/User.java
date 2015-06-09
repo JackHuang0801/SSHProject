@@ -22,10 +22,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-
-
-
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Proxy;
 import org.springframework.security.GrantedAuthority;
