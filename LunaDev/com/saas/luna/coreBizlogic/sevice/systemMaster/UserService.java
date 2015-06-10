@@ -9,7 +9,9 @@
 
 package com.saas.luna.coreBizlogic.sevice.systemMaster;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.userdetails.UserDetails;
@@ -17,6 +19,7 @@ import org.springframework.security.userdetails.UserDetailsService;
 import org.springframework.security.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.saas.luna.coreBizlogic.pojo.systemMaster.Url;
 import com.saas.luna.coreBizlogic.pojo.systemMaster.User;
 
 /**
@@ -39,6 +42,17 @@ public class UserService implements UserDetailsService {
 			throw new UsernameNotFoundException("User：" + userName + " has no GrantedAuthority");
 		}
 		return usersList.get(0);
+	}
+
+	public Map<String, String> loadUrlAuthorities() {
+		System.out.println("\nExecute method loadUrlAuthorities");
+		Map<String, String> urlAuthorities = new HashMap<String, String>();
+//		List<Url> urlsList = urlDAO.findUrlsAll();
+		List<Url> urlsList = null;
+		for (Url url : urlsList) {
+			urlAuthorities.put(url.getValue(), url.getRoleAuthorities());
+		}
+		return urlAuthorities;
 	}
 }
 

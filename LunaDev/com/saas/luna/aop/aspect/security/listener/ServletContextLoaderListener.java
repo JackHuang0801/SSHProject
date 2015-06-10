@@ -49,11 +49,18 @@ public class ServletContextLoaderListener implements ServletContextListener {
 	/**
 	 * Get UserService from ApplicationContext
 	 *
+	 * 调用的getBean(), 要依赖的jar包有
+	 * spring-context-4.2.0.RC1.jar, spring-web-4.2.0.RC1.jar, spring-beans-4.2.0.RC1.jar
+	 *
+	 * 当 ServletContext 属性列表中不存在 WebApplicationContext 时，getWebApplicationContext() 方法不会抛出异常，它简单地返回 null。
+	 * 而 WebApplicationContextUtils 另一个 getRequiredWebApplicationContext(ServletContext sc)
+	 * 方法要求 ServletContext 属性列表中一定要包含一个有效的 WebApplicationContext 对象，否则马上抛出一个 IllegalStateException 异常。
+	 *
 	 * @param servletContext
 	 * @return
 	 */
 	protected UserService getUserService(ServletContext servletContext) {
-		return (UserService) WebApplicationContextUtils.getWebApplicationContext(servletContext).getBean(
+		return (UserService) WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext).getBean(
 				"userService");
 	}
 }
