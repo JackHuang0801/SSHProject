@@ -12,10 +12,10 @@ package com.saas.luna.coreBizlogic.dao.systemMaster.hibernateImpl;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.type.StringType;
 import org.springframework.orm.hibernate4.HibernateCallback;
 
 import com.saas.luna.JackFramework.core.dao.HibernateSpringPojoDAO;
@@ -31,6 +31,7 @@ import com.saas.luna.coreBizlogic.pojo.systemMaster.User;
  * @version  V1.0
  * @since    JDK 1.8.0_45
  */
+//public class HibernateUserDAO implements IUserDAO {
 public class HibernateUserDAO extends HibernateSpringPojoDAO<User> implements IUserDAO {
 
 	@Override
@@ -54,10 +55,13 @@ public class HibernateUserDAO extends HibernateSpringPojoDAO<User> implements IU
 		// hqlStringBuilder.append(" AND user.disabled = false");
 		final String hqlString = hqlStringBuilder.toString();
 
+		/*
+		 * Hibernate4 删除了Hibernate.STRING，改为StringType.INSTANCE
+		 */
 		List<User> usersList = (List<User>) getHibernateTemplate().execute(new HibernateCallback() {
 			public Object doInHibernate(Session hibernateSession) throws HibernateException {
 				Query query = hibernateSession.createQuery(hqlString);
-				query.setParameter("userName", userName, "");
+				query.setParameter("userName", userName, StringType.INSTANCE);
 				return query.list();
 			}
 		});

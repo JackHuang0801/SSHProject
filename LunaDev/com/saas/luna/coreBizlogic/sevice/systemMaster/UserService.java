@@ -48,8 +48,8 @@ public class UserService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException, DataAccessException {
 		System.out.println("\nExecute method loadUserByUsername -> " + userName);
-//		List<User> usersList = userDAO.findUserByUsername(userName);
-		List<User> usersList = null;
+		List<User> usersList = userDAO.findUserByUsername(userName);
+//		List<User> usersList = null;
 		if (usersList.isEmpty()) {
 			throw new UsernameNotFoundException("User：" + userName + " has no GrantedAuthority");
 		}
@@ -59,8 +59,8 @@ public class UserService implements UserDetailsService {
 	public Map<String, String> loadUrlAuthorities() {
 		System.out.println("\nExecute method loadUrlAuthorities");
 		Map<String, String> urlAuthorities = new HashMap<String, String>();
-		List<Url> urlsList = urlDAO.findUrlsAll();
-//		List<Url> urlsList = null;
+//		List<Url> urlsList = urlDAO.findUrlsAll();
+		List<Url> urlsList = null;
 		for (Url url : urlsList) {
 			urlAuthorities.put(url.getValue(), url.getRoleAuthorities());
 		}
