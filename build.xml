@@ -87,7 +87,9 @@
 		<pathelement path="${basedir}/ProjectContent/lib/devLib/spring-security-2.0.5.RELEASE/spring-security-portlet-2.0.5.RELEASE.jar"/>
 		<pathelement path="${basedir}/ProjectContent/lib/devLib/spring-security-2.0.5.RELEASE/spring-security-taglibs-2.0.5.RELEASE.jar"/>
 
-		<!-- Struts 2-2.3.24 jars and Hibernate-release-4.3.10.Final jars-->
+		<!-- Struts 2-2.3.24 jars -->
+		<!-- Hibernate-release-4.3.10.Final jars-->
+		<!-- spring-framework-4.1.6.RELEASE jars-->
         <fileset dir="${basedir}">
             <include name="WebContent/WEB-INF/lib/**/*.jar"/>
 		</fileset>
