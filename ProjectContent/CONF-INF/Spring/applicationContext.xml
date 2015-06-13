@@ -17,26 +17,50 @@
 
     <!-- ========================= GENERAL DEFINITIONS ========================= -->
 
-    <!-- Configurer that replaces ${...} placeholders with values from properties files -->
+	<!--
+		作用详细讲解， 参阅http://www.cnblogs.com/leiOOlei/p/3713989.html
+		1.<context:annotation-config> 是用于激活那些已经在spring容器里注册过的bean（无论是通过xml的方式还是通过package sanning的方式）上面的注解。
+		2.<context:component-scan>除了具有<context:annotation-config />的功能之外，
+		还具有自动将带有@component,@service,@Repository等注解的对象注册到spring容器中的功能。
+	 -->
+	<context:component-scan base-package="com.saas.luna"/>
+
+	<!-- 加载数据库属性配置文件 -->
+	<!-- 简化写法一
+		<context:property-placeholder location="classpath:jdbc.properties" />
+	 -->
+    <!-- 复杂写法二  -->
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>
-                <value>classpath:conf/jdbc.properties</value>
-                <value>classpath:conf/hibernate/hibernate.properties</value>
+                <value>classpath:CONF-INF/jdbc.properties</value>
+                <value>classpath:CONF-INF/Hibernate/hibernate.properties</value>
             </list>
         </property>
     </bean>
 
-    <context:component-scan base-package="com.newzhongmei.pmi"/>
-
-	<!-- Local Apache Commons DBCP DataSource that refers to a combined database -->
-	<!-- The placeholders are resolved from jdbc.properties through the PropertyPlaceholderConfigurer in applicationContext.xml -->
+	<!-- 数据库连接池DBCP配置 -->
+    <!-- Local Apache Commons DBCP DataSource that refers to a combined database -->
+    <!--
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 		<property name="driverClassName" value="${jdbc.driverClassName}"/>
 		<property name="url" value="${jdbc.url}"/>
 		<property name="username" value="${jdbc.username}"/>
 		<property name="password" value="${jdbc.password}"/>
 	</bean>
+	 -->
+	<!-- 数据库连接池c3p0配置 -->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+        destroy-method="close">
+        <property name="jdbcUrl" value="${jdbc.url}"></property>
+        <property name="driverClass" value="${jdbc.driverClassName}"></property>
+        <property name="user" value="${jdbc.username}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+        <property name="maxPoolSize" value="40"></property>
+        <property name="minPoolSize" value="1"></property>
+        <property name="initialPoolSize" value="1"></property>
+        <property name="maxIdleTime" value="20"></property>
+    </bean>
 
 	<!-- Hibernate SessionFactory -->
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
