@@ -336,7 +336,7 @@
             </fileset>
 
         	<!-- 配合上面将jar复制到\ProjectContent\lib\runLib，
-        		 再抄到 ${dist.home}/${project.system.webapp.name}/WEB-INF/lib
+        		   再抄到 ${dist.home}/${project.system.webapp.name}/WEB-INF/lib
     		 -->
             <fileset dir="${lib.home}/runLib">
                 <include name="*.jar"/>
@@ -397,7 +397,6 @@
         <!-- Create the <war> file -->
         <jar jarfile="${dist.home}/${project.system.webapp.name}.war" basedir="${dist.home}/${project.system.webapp.name}" />
     </target>
-
 
 	<target name="deploy-war" depends="Step3-1-distribution, undeploy" >
 		<copy file="${dist.home}/${project.system.webapp.name}.war" todir="${tomcat.home}/webapps" />
