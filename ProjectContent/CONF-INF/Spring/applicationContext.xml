@@ -63,6 +63,30 @@
     </bean>
 
 	<!-- Hibernate SessionFactory -->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+    	<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+				<prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+				<prop key="hibernate.jdbc.fetch_size">${hibernate.jdbc.fetch_size}</prop>
+				<prop key="hibernate.jdbc.batch_size">${hibernate.jdbc.batch_size}</prop>
+			</props>
+		</property>
+        <!-- 自动扫描注解方式配置的hibernate类文件 -->
+        <property name="packagesToScan" value="com.saas.luna.coreBizlogic.pojo.*" />
+        <!--
+        <property name="packagesToScan">
+            <list>
+                <value>com.hdj.pojo</value>
+            </list>
+        </property>
+         -->
+    </bean>
+
+    <!-- Spring 3.x 4.x 已经删除了 AnnotationSessionFactoryBean 对Hibernate4的支持, 改用LocalSessionFactoryBean替换了该class -->
+    <!--
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="packagesToScan" value="com.newzhongmei.pmi.coreBusiness.entity.*" />
@@ -73,21 +97,24 @@
 				<prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
 				<prop key="hibernate.jdbc.fetch_size">${hibernate.jdbc.fetch_size}</prop>
 				<prop key="hibernate.jdbc.batch_size">${hibernate.jdbc.batch_size}</prop>
-
 			</props>
 		</property>
-		<!--
-		<property name="namingStrategy">
-            <bean class="org.hibernate.cfg.ImprovedNamingStrategy" />
-		</property>
-		<property name="packagesToScan" value="com.asiasoft.ecrm.corebiz.entity.demo.*" />
-        -->
 	</bean>
+	 -->
 
-	<!-- Transaction manager for a single Hibernate SessionFactory (alternative to JTA) -->
-	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
+    <!-- 配置事务管理器 -->
+    <bean id="transactionManager"
+        class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+
+    <!-- 配置事务通知属性 -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <!-- 定义事务传播属性 -->
+        <tx:attributes>
+        	<tx:method name="*"/>
+        </tx:attributes>
+    </tx:advice>
 
 	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
 		<property name="transactionManager" ref="transactionManager" />
@@ -127,11 +154,5 @@
         -->
         <aop:advisor pointcut="within(com.newzhongmei.pmi.coreBusiness.service..*)" advice-ref="txAdvice"/>
     </aop:config>
-
-    <tx:advice id="txAdvice" transaction-manager="transactionManager">
-        <tx:attributes>
-            <tx:method name="*"/>
-        </tx:attributes>
-    </tx:advice>
 
 </beans>
