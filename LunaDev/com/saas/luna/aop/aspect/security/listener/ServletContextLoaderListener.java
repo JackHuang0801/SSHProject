@@ -17,7 +17,7 @@ import javax.servlet.ServletContextListener;
 
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import com.saas.luna.coreBizlogic.sevice.systemMaster.UserService;
+import com.saas.luna.coreBizlogic.service.systemMaster.UserService;
 
 /**
  * ClassName:ServletContextLoaderListener

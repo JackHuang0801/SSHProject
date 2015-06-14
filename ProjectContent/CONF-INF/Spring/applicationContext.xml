@@ -152,7 +152,7 @@
             "txAdvice" to all methods defined in the com.asiasoft.ecrm.corebiz package
             or any sub-package under that.
         -->
-        <aop:advisor pointcut="within(com.newzhongmei.pmi.coreBusiness.service..*)" advice-ref="txAdvice"/>
+        <aop:advisor pointcut="within(com.saas.luna.coreBizlogic.service..*)" advice-ref="txAdvice"/>
     </aop:config>
 
 </beans>

@@ -17,11 +17,14 @@
 	<property file="build.properties" />
 
 	<property environment="env"/>
-	<property name="jdk.home" value="I:\Java\jdk1.8.0_45" />
+
 	<!--
+		<property name="jdk.home" value="I:\Java\jdk1.8.0_45" />
 		<property name="tomcat.home" value="${env.TOMCAT_HOME}" />
+		<property name="tomcat.home" value="I:\apache-tomcat-8.0.22" />
 	-->
-	<property name="tomcat.home" value="I:\apache-tomcat-8.0.22" />
+	<property name="jdk.home" value="${env.JAVA_HOME}" />
+	<property name="tomcat.home" value="${env.TOMCAT_HOME}" />
 
 	<property name="src.home"   value="${basedir}/${src.home}" />
 	<property name="lib.home"   value="${basedir}/${lib.home}" />
@@ -163,7 +166,7 @@
 	<target name="compile" depends="prepare" description="compile the source" >
 		<mkdir dir="${build.home}" />
 		<mkdir dir="${build.classes.dir}" />
-		<!-- 用Ant来编译java时使用的JDK
+		<!-- 用Ant来编译java时使用的JDK 或者 直接修改JAVA_HOME
 			 fork="true" executable="C:\Program Files (x86)\Java\jdk1.8.0_45\bin\javac"
 		-->
 		<javac srcdir="${src.home}"
@@ -206,7 +209,7 @@
             <fileset dir="${build.classes.dir}">
                 <include name="com/saas/luna/webBusiness/**" />
             </fileset>
-            <fileset dir="${res.CONF-INF.dir}/struts">
+            <fileset dir="${res.conf.dir}/struts">
                 <include name="*.*" />
             </fileset>
         </jar>
@@ -298,20 +301,20 @@
             </fileset>
         </copy>
 
-        <copy todir="${dist.home}/${project.system.webapp.name}/WEB-INF/classes/conf">
-            <fileset dir="${res.CONF-INF.dir}">
+        <copy todir="${dist.home}/${project.system.webapp.name}/WEB-INF/classes/CONF-INF">
+            <fileset dir="${res.conf.dir}">
                 <include name="*.*" />
             </fileset>
         </copy>
 
-        <copy todir="${dist.home}/${project.system.webapp.name}/WEB-INF/classes/conf/Spring">
-            <fileset dir="${res.CONF-INF.dir}/Spring">
+        <copy todir="${dist.home}/${project.system.webapp.name}/WEB-INF/classes/CONF-INF/Spring">
+            <fileset dir="${res.conf.dir}/Spring">
                 <include name="*.*" />
             </fileset>
         </copy>
 
-        <copy todir="${dist.home}/${project.system.webapp.name}/WEB-INF/classes/conf/Hibernate">
-            <fileset dir="${res.CONF-INF.dir}/Hibernate">
+        <copy todir="${dist.home}/${project.system.webapp.name}/WEB-INF/classes/CONF-INF/Hibernate">
+            <fileset dir="${res.conf.dir}/Hibernate">
                 <include name="*.*" />
             </fileset>
         </copy>
@@ -324,6 +327,12 @@
                 <include name="luna-security.jar"/>
                 <include name="luna-webBusiness.jar"/>
             </fileset>
+
+            <fileset dir="${lib.home}/runLib">
+                <include name="*.jar"/>
+            </fileset>
+
+        	<!--
             <fileset dir="${lib.home}/runLib/asiasoft">
                 <include name="*.jar"/>
             </fileset>
@@ -372,6 +381,7 @@
         	<fileset dir="${lib.home}/runLib/report">
         	    <include name="*.jar"/>
         	</fileset>
+        	-->
         </copy>
 
         <!-- Create the <war> file -->
