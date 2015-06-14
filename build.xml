@@ -319,6 +319,13 @@
             </fileset>
         </copy>
 
+		<!-- 将 /WebContent/WEB-INF/lib/*.jar 全部复制去\ProjectContent\lib\runLib -->
+		<copy todir="${lib.home}/runLib">
+			<fileset dir="${web.home}/WEB-INF/lib">
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
+
         <copy todir="${dist.home}/${project.system.webapp.name}/WEB-INF/lib">
             <fileset dir="${build.lib.dir}">
                 <include name="luna-aop.jar"/>
@@ -328,6 +335,9 @@
                 <include name="luna-webBusiness.jar"/>
             </fileset>
 
+        	<!-- 配合上面将jar复制到\ProjectContent\lib\runLib，
+        		 再抄到 ${dist.home}/${project.system.webapp.name}/WEB-INF/lib
+    		 -->
             <fileset dir="${lib.home}/runLib">
                 <include name="*.jar"/>
             </fileset>
