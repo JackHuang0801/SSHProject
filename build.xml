@@ -190,9 +190,9 @@
                 <include name="com/saas/luna/aop/**" />
             </fileset>
         </jar>
-        <jar destfile="${build.lib.dir}/luna-coreBusiness.jar">
+        <jar destfile="${build.lib.dir}/luna-coreBizlogic.jar">
 			<fileset dir="${build.classes.dir}">
-				<include name="com/saas/luna/coreBusiness/**" />
+				<include name="com/saas/luna/coreBizlogic/**" />
 			</fileset>
 		</jar>
         <jar destfile="${build.lib.dir}/luna-support.jar">
