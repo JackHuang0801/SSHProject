@@ -10,9 +10,12 @@
 package com.saas.luna.coreBizlogic.service;
 
 import org.apache.log4j.Logger;
-import org.springframework.security.context.SecurityContextHolder;
-import org.springframework.security.ui.WebAuthenticationDetails;
-import org.springframework.security.userdetails.UserDetails;
+//import org.springframework.security.context.SecurityContextHolder;
+//import org.springframework.security.ui.WebAuthenticationDetails;
+//import org.springframework.security.userdetails.UserDetails;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
 /**
  * ClassName:BaseService Date: 2015年6月9日 下午5:32:02

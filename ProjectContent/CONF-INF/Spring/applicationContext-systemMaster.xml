@@ -10,20 +10,20 @@
 	<!-- <bean id="userService"
 		class="com.saas.luna.coreBizlogic.service.systemManagement.UserService" />-->
 	<bean id="userDAO"
-		class="com.saas.luna.coreBizlogic.dao.systemManagement.hibernate.HibernateUserDAO">
+		class="com.saas.luna.coreBizlogic.dao.systemMaster.hibernateImpl.HibernateUserDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
 
-	<!-- Department -->
+	<!-- Department
 	<bean id="departmentService"
 		class="com.saas.luna.coreBizlogic.service.systemManagement.DepartmentService" />
 	<bean id="departmentDAO"
 		class="com.saas.luna.coreBizlogic.dao.systemManagement.hibernate.HibernateDepartmentDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-
-	<!-- Role and Res -->
+ -->
+	<!-- Role and Res
 	<bean id="securityService"
 		class="com.saas.luna.coreBizlogic.service.systemManagement.SecurityService" />
 
@@ -51,4 +51,5 @@
 		class="com.saas.luna.coreBizlogic.dao.systemManagement.hibernate.HibernateMethodDAO">
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
+	-->
 </beans>

@@ -1,29 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<beans:beans xmlns="http://www.springframework.org/schema/security"
-	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:aop="http://www.springframework.org/schema/aop"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
-	                    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
-                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.4.xsd">
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	                    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
 	<beans:bean id="loggerListener"
-		class="org.springframework.security.event.authentication.LoggerListener" />
+		class="org.springframework.security.authentication.event.LoggerListener" />
 
-	<http access-denied-page="/pages/error.jsp" auto-config="true">
-		<!-- 一些资源 -->
-		<intercept-url pattern="/scripts/**" filters="none" />
-		<intercept-url pattern="/styles/**" filters="none" />
-		<intercept-url pattern="/images/**" filters="none" />
-		<!--
-			<intercept-url pattern="/static/**" filters="none" />
-			<intercept-urlpattern="/template/**" filters="none" /> <intercept-url
-			pattern="/" filters="none" />
-		-->
+	<http auto-config="true">
+		<access-denied-handler error-page="/pages/error.jsp"/>
+		<!-- 配置不过滤的资源 -->
+		<intercept-url pattern="/scripts/**" access="permitAll" />
+		<intercept-url pattern="/styles/**" access="permitAll" />
+		<intercept-url pattern="/images/**" access="permitAll" />
+		<intercept-url pattern="/index.jsp" access="permitAll" />
 
-		<intercept-url pattern="/index.jsp" filters="none" />
 		<!-- 这里千万得加上,否则这里就是死循环了,一直拦截 -->
-		<intercept-url pattern="/showLogin.action" filters="none" />
+		<intercept-url pattern="/showLogin.action" access="permitAll" />
 
 
 		<!-- 一系列URL网址和访问这些网址所需的权限都通过保存到数据库实现认证-->
@@ -34,31 +31,34 @@
 			<intercept-url pattern="/pages/super/**" access="ROLE_SUPER" />
 		-->
 
-
 		<form-login login-page="/showLogin.action"
 			authentication-failure-url="/showLogin.action?error=true"
 			default-target-url="/showHome.action" />
 		<logout logout-success-url="/showLogin.action" />
 		<remember-me />
 		<http-basic />
+		<!--
+			实际上，我们虽然无法替换FilterSecurityInterceptor的默认实现，不过我们可以再实现一个类似的过滤器，
+			并将我们自己的过滤器作为一个customer-filter，加到默认的过滤器链的最后，从而完成整个过滤检查。
+		-->
+		<custom-filter ref="urlResourceSecurityInterceptor" after="FILTER_SECURITY_INTERCEPTOR" />
 	</http>
 
-	<authentication-manager alias="authenticationManager" />
-
-	<authentication-provider user-service-ref="userService">
-		<password-encoder hash="md5">
-			<salt-source user-property="username" /> <!-- 盐值使用用户名字符串 -->
-
-		</password-encoder>
-	</authentication-provider>
+	<authentication-manager alias="authenticationManager">
+		<authentication-provider user-service-ref="userService">
+			<password-encoder hash="md5">
+				<salt-source user-property="username" /> <!-- 盐值使用用户名字符串 -->
+			</password-encoder>
+		</authentication-provider>
+	</authentication-manager>
 
 	<beans:bean id="accessDecisionManager"
-		class="org.springframework.security.vote.AffirmativeBased">
+		class="org.springframework.security.access.vote.AffirmativeBased">
 		<beans:property name="allowIfAllAbstainDecisions"
 			value="false" />
 		<beans:property name="decisionVoters">
 			<beans:list>
-				<beans:bean class="org.springframework.security.vote.RoleVoter" />
+				<beans:bean class="org.springframework.security.access.vote.RoleVoter" />
 				<!--
 					<beans:bean
 					class="org.springframework.security.vote.AuthenticatedVoter" />
@@ -74,22 +74,17 @@
 		负责对资源进行认证的Interceptor(实际就是fiter),检查Authentication所授予的权限是否拥有可以访问被访问的url资源。
 	-->
 	<beans:bean id="urlResourceSecurityInterceptor"
-		class="org.springframework.security.intercept.web.FilterSecurityInterceptor">
+		class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor">
 		<beans:property name="authenticationManager" ref="authenticationManager" />
 		<beans:property name="accessDecisionManager" ref="accessDecisionManager" />
-		<beans:property name="objectDefinitionSource"
-			ref="urlFilterInvocationDefinitionSource" />
+		<beans:property name="objectDefinitionSource" ref="urlDefinitionSource" />
 		<beans:property name="observeOncePerRequest" value="false" />
-		<!-- <custom-filter after="LAST" /> -->
-		<custom-filter after="FILTER_SECURITY_INTERCEPTOR" />
 	</beans:bean>
-	<!--
-		实际上，我们虽然无法替换FilterSecurityInterceptor的默认实现，不过我们可以再实现一个类似的过滤器，
-		并将我们自己的过滤器作为一个customer-filter，加到默认的过滤器链的最后，从而完成整个过滤检查。
+
+	<!-- 获取访问被访问的资源所需要的权限（authority），以ConfigAttributeDefinition形式返回
 	-->
-	<!-- 获取访问被访问的资源所需要的权限（authority），以ConfigAttributeDefinition形式返回 -->
-	<beans:bean id="urlFilterInvocationDefinitionSource"
-		class="com.newzhongmei.pmi.aop.aspect.security.DefinitionSource.UrlFilterInvocationDefinitionSource" />
+	<beans:bean id="urlDefinitionSource"
+		class="com.saas.luna.aop.aspect.security.DefinitionSource.UrlDefinitionSource" />
 
 	<!--
 		\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -98,6 +93,7 @@
 		当调用org.catspaw.ss2test1.service包下所有Service结尾的类的任何方法时，通知accessDeniedInterceptor和methodSecurityInterceptor
 		两个Interceptor。
 	-->
+<!--
 	<aop:config>
 		<aop:pointcut id="userPointcut"
 			expression="execution(* com.newzhongmei.pmi.coreBusiness.service.materialBalanceManagement.PolystyreneStorageListService.*(..))
@@ -115,11 +111,11 @@
 
 	<beans:bean id="accessDeniedInterceptor"
 		class="com.newzhongmei.pmi.aop.aspect.security.interceptor.AccessDeniedInterceptor" />
-
+ -->
 	<!--
 		负责对资源进行认证的Interceptor(实际就是fiter),检查Authentication所授予的权限是否拥有可以访问被访问的method资源。
 	-->
-	<beans:bean id="methodResourceSecurityInterceptor"
+	<!-- <beans:bean id="methodResourceSecurityInterceptor"
 		class="org.springframework.security.intercept.method.aopalliance.MethodSecurityInterceptor">
 		<beans:property name="authenticationManager" ref="authenticationManager" />
 		<beans:property name="accessDecisionManager" ref="accessDecisionManager" />
@@ -127,14 +123,14 @@
 	</beans:bean>
 	<beans:bean id="methodInvocationDefinitionSource"
 		class="com.newzhongmei.pmi.aop.aspect.security.DefinitionSource.MethodInvocationDefinitionSource">
-		<!--
+
 			<constructor-arg index="0"> <bean
 			class="org.catspaw.ss2test1.security.SimpleAspectJMethodMatcher" />
 			</constructor-arg> <constructor-arg index="1"> <bean
 			class="org.catspaw.ss2test1.security.MethodMapFactoryBean"> <property
 			name="resourceDao" ref="resourceDao" /> </bean> </constructor-arg>
-		-->
-		<!-- 两个构造函数的参数 -->
+
+		两个构造函数的参数
 		<beans:constructor-arg index="0">
 			<beans:bean
 				class="com.newzhongmei.pmi.aop.aspect.security.auxiliary.AspectjDefinitionMethodMatcher"></beans:bean>
@@ -143,6 +139,6 @@
 			<beans:bean
 				class="com.newzhongmei.pmi.coreBusiness.service.systemManagement.UserService"></beans:bean>
 		</beans:constructor-arg>
-	</beans:bean>
+	</beans:bean> -->
 
 </beans:beans>

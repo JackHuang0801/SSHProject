@@ -67,6 +67,7 @@
 
 
 	<!-- ===================== Compilation Classpath =========================== -->
+	<!--
 	<path id="classpath">
         <pathelement location="${jdk.home}/lib/dt.jar"/>
         <pathelement location="${jdk.home}/lib/tools.jar"/>
@@ -74,6 +75,7 @@
             <include name="lib/**/*.jar"/>
 		</fileset>
 	</path>
+	-->
 
 	<path id="compile-classpath">
         <pathelement location="${jdk.home}/lib/dt.jar"/>
@@ -81,6 +83,7 @@
 
 		<!-- 引用第三方jar包 -->
 		<!-- Spring Security 2.0.5 jars -->
+		<!--
 		<pathelement path="${basedir}/ProjectContent/lib/devLib/spring-security-2.0.5.RELEASE/spring-security-acl-2.0.5.RELEASE.jar"/>
 		<pathelement path="${basedir}/ProjectContent/lib/devLib/spring-security-2.0.5.RELEASE/spring-security-cas-client-2.0.5.RELEASE.jar"/>
 		<pathelement path="${basedir}/ProjectContent/lib/devLib/spring-security-2.0.5.RELEASE/spring-security-core-2.0.5.RELEASE.jar"/>
@@ -89,12 +92,20 @@
 		<pathelement path="${basedir}/ProjectContent/lib/devLib/spring-security-2.0.5.RELEASE/spring-security-openid-2.0.5.RELEASE.jar"/>
 		<pathelement path="${basedir}/ProjectContent/lib/devLib/spring-security-2.0.5.RELEASE/spring-security-portlet-2.0.5.RELEASE.jar"/>
 		<pathelement path="${basedir}/ProjectContent/lib/devLib/spring-security-2.0.5.RELEASE/spring-security-taglibs-2.0.5.RELEASE.jar"/>
+		-->
+		<!-- Spring Security 4.0.1 jars -->
+		<fileset dir="${basedir}">
+			<include name="ProjectContent/lib/devLib/spring-security-4.0.1.RELEASE/*.jar"/>
+		</fileset>
 
 		<!-- Struts 2-2.3.24 jars -->
 		<!-- Hibernate-release-4.3.10.Final jars-->
 		<!-- spring-framework-4.1.6.RELEASE jars-->
         <fileset dir="${basedir}">
             <include name="WebContent/WEB-INF/lib/**/*.jar"/>
+		</fileset>
+		<fileset dir="${basedir}">
+			<include name="ProjectContent/lib/devLib/hibernate-release-4.3.10.Final/*.jar"/>
 		</fileset>
 
 		<!--
@@ -209,7 +220,7 @@
             <fileset dir="${build.classes.dir}">
                 <include name="com/saas/luna/webBusiness/**" />
             </fileset>
-            <fileset dir="${res.conf.dir}/struts">
+            <fileset dir="${res.conf.dir}/Struts">
                 <include name="*.*" />
             </fileset>
         </jar>
@@ -219,6 +230,21 @@
             </fileset>
         </jar>
 
+        <jar destfile="${build.lib.dir}/luna-JackFramework-core.jar">
+            <fileset dir="${build.classes.dir}">
+                <include name="com/saas/luna/JackFramework/core/**" />
+            </fileset>
+        </jar>
+        <jar destfile="${build.lib.dir}/luna-JackFramework-commons.jar">
+            <fileset dir="${build.classes.dir}">
+                <include name="com/saas/luna/JackFramework/commons/**" />
+            </fileset>
+        </jar>
+        <jar destfile="${build.lib.dir}/luna-JackFramework-util.jar">
+            <fileset dir="${build.classes.dir}">
+                <include name="com/saas/luna/JackFramework/util/**" />
+            </fileset>
+        </jar>
 	</target>
 
     <target name="test-clean" description="clean up">
@@ -325,14 +351,34 @@
 				<include name="*.jar"/>
 			</fileset>
 		</copy>
+		<!--
+		<copy todir="${lib.home}/runLib">
+			<fileset dir="${lib.home}/devLib/spring-security-2.0.5.RELEASE">
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
+		-->
+		<copy todir="${lib.home}/runLib">
+			<fileset dir="${lib.home}/devLib/spring-security-4.0.1.RELEASE">
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="${lib.home}/runLib">
+			<fileset dir="${lib.home}/devLib/hibernate-release-4.3.10.Final">
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
 
         <copy todir="${dist.home}/${project.system.webapp.name}/WEB-INF/lib">
             <fileset dir="${build.lib.dir}">
                 <include name="luna-aop.jar"/>
-                <include name="luna-coreBusiness.jar"/>
+                <include name="luna-coreBizlogic.jar"/>
                 <include name="luna-support.jar"/>
                 <include name="luna-security.jar"/>
                 <include name="luna-webBusiness.jar"/>
+            	<include name="luna-JackFramework-core.jar"/>
+            	<include name="luna-JackFramework-commons.jar"/>
+            	<include name="luna-JackFramework-util.jar"/>
             </fileset>
 
         	<!-- 配合上面将jar复制到\ProjectContent\lib\runLib，
@@ -341,57 +387,6 @@
             <fileset dir="${lib.home}/runLib">
                 <include name="*.jar"/>
             </fileset>
-
-        	<!--
-            <fileset dir="${lib.home}/runLib/asiasoft">
-                <include name="*.jar"/>
-            </fileset>
-            <fileset dir="${lib.home}/runLib/asf/commons">
-                <include name="*.jar"/>
-            </fileset>
-            <fileset dir="${lib.home}/runLib/asf/jakarta">
-                <include name="*.jar"/>
-            </fileset>
-            <fileset dir="${lib.home}/runLib/asf/logging">
-                <include name="*.jar"/>
-            </fileset>
-            <fileset dir="${lib.home}/runLib/javaee">
-                <include name="*.jar"/>
-            </fileset>
-            <fileset dir="${lib.home}/runLib/struts">
-                <include name="*.jar"/>
-            </fileset>
-            <fileset dir="${lib.home}/runLib/spring">
-                <include name="*.jar"/>
-            </fileset>
-            <fileset dir="${lib.home}/runLib/hibernate">
-                <include name="*.jar"/>
-            </fileset>
-            <fileset dir="${lib.home}/runLib/misc">
-                <include name="*.jar"/>
-            </fileset>
-            <fileset dir="${lib.home}/runLib/misc/asm">
-                <include name="*.jar"/>
-            </fileset>
-            <fileset dir="${lib.home}/runLib/misc/aspectj">
-                <include name="*.jar"/>
-            </fileset>
-            <fileset dir="${lib.home}/runLib/misc/jdbc">
-                <include name="*.jar"/>
-            </fileset>
-
-            <fileset dir="${lib.home}/runLib/compass">
-                <include name="*.jar"/>
-            </fileset>
-
-            <fileset dir="${lib.home}/runLib/jbpm">
-                <include name="*.jar"/>
-            </fileset>
-
-        	<fileset dir="${lib.home}/runLib/report">
-        	    <include name="*.jar"/>
-        	</fileset>
-        	-->
         </copy>
 
         <!-- Create the <war> file -->
@@ -764,6 +759,7 @@
     </target>
 
     <target name="Deploy-step4-endAntCommand">
+    	<delete dir="${lib.home}/runLib" failonerror="false"/>
         <echo>+-------------------------------------------+</echo>
         <echo>    Finished ${project.system.name}  Successful!!!  </echo>
         <echo>${company.name}</echo>

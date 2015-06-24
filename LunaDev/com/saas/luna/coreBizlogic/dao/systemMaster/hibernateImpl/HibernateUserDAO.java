@@ -9,7 +9,6 @@
 
 package com.saas.luna.coreBizlogic.dao.systemMaster.hibernateImpl;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import org.hibernate.HibernateException;

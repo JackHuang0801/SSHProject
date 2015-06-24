@@ -16,9 +16,12 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.dao.DataAccessException;
-import org.springframework.security.userdetails.UserDetails;
-import org.springframework.security.userdetails.UserDetailsService;
-import org.springframework.security.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+//import org.springframework.security.userdetails.UserDetails;
+//import org.springframework.security.userdetails.UserDetailsService;
+//import org.springframework.security.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.saas.luna.coreBizlogic.dao.systemMaster.IUserDAO;

@@ -38,5 +38,6 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.wst.jsdt.core.jsNature</nature>
 		<nature>com.jaspersoft.studio.babel.editor.rbeNature</nature>
+		<nature>com.sysdeo.eclipse.tomcat.tomcatnature</nature>
 	</natures>
 </projectDescription>

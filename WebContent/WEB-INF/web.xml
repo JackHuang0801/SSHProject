@@ -41,7 +41,7 @@
 	<!-- 添加对spring的支持 -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:conf/spring/applicationContext*.xml</param-value>
+		<param-value>classpath:CONF-INF/Spring/applicationContext*.xml</param-value>
 	</context-param>
 
 	<!--

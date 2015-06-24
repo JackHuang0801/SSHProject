@@ -7,6 +7,7 @@
 package com.saas.luna.coreBizlogic.pojo.systemMaster;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,14 +23,17 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Proxy;
-import org.springframework.security.GrantedAuthority;
-import org.springframework.security.GrantedAuthorityImpl;
-import org.springframework.security.userdetails.UserDetails;
+
 
 //import org.springframework.security.core.GrantedAuthority;
 //import org.springframework.security.core.userdetails.UserDetails;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.saas.luna.JackFramework.core.pojo.BaseDomainPojo;
 
@@ -96,12 +100,12 @@ public class User extends BaseDomainPojo<Long> implements UserDetails {
 	 */
 	@Override
 	@Transient
-	public GrantedAuthority[] getAuthorities() {
+	public Collection<? extends GrantedAuthority> getAuthorities() {
 		List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>(roles.size());
 		for (Role role : roles) {
-			grantedAuthorities.add(new GrantedAuthorityImpl(role.getRoleName()));
+			grantedAuthorities.add(new SimpleGrantedAuthority(role.getRoleName()));
 		}
-		return grantedAuthorities.toArray(new GrantedAuthority[roles.size()]);
+		return grantedAuthorities;
 	}
 
 	/**
