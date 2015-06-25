@@ -54,37 +54,36 @@
 
 	<beans:bean id="accessDecisionManager"
 		class="org.springframework.security.access.vote.AffirmativeBased">
-		<beans:property name="allowIfAllAbstainDecisions"
-			value="false" />
-		<beans:property name="decisionVoters">
+		<!-- 是否允许所有的投票者弃权,如果为false，表示如果所有的投票者弃权，就禁止访问 -->
+		<beans:property name="allowIfAllAbstainDecisions" value="false" />
+		<beans:constructor-arg>
 			<beans:list>
+				<!-- RoleVoter默认角色名称都要以ROLE_开头，否则不会被计入权限控制，如果要修改前缀，可以通过对rolePrefix属性进行修改 -->
 				<beans:bean class="org.springframework.security.access.vote.RoleVoter" />
-				<!--
-					<beans:bean
-					class="org.springframework.security.vote.AuthenticatedVoter" />
-				-->
+				<!-- <beans:bean class="org.springframework.security.access.vote.AuthenticatedVoter" /> -->
 			</beans:list>
-		</beans:property>
+		</beans:constructor-arg>
 	</beans:bean>
 
 	<!--
 		\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 	-->
-	<!--
+	<!--使用Spring security3提供的过滤器,并将过滤器默认的认证和授权组件替换为我们已经定义的认证和授权组件
 		负责对资源进行认证的Interceptor(实际就是fiter),检查Authentication所授予的权限是否拥有可以访问被访问的url资源。
 	-->
 	<beans:bean id="urlResourceSecurityInterceptor"
 		class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor">
 		<beans:property name="authenticationManager" ref="authenticationManager" />
 		<beans:property name="accessDecisionManager" ref="accessDecisionManager" />
-		<beans:property name="objectDefinitionSource" ref="urlDefinitionSource" />
+		<!-- <beans:property name="objectDefinitionSource" ref="urlMetadataSource" /> -->
+		<beans:property name="securityMetadataSource" ref="urlMetadataSource" />
 		<beans:property name="observeOncePerRequest" value="false" />
 	</beans:bean>
 
 	<!-- 获取访问被访问的资源所需要的权限（authority），以ConfigAttributeDefinition形式返回
 	-->
-	<beans:bean id="urlDefinitionSource"
-		class="com.saas.luna.aop.aspect.security.DefinitionSource.UrlDefinitionSource" />
+	<beans:bean id="urlMetadataSource"
+		class="com.saas.luna.aop.aspect.security.MetadataSource.UrlMetadataSource" />
 
 	<!--
 		\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
