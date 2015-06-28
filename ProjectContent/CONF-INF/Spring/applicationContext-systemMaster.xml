@@ -42,14 +42,15 @@
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
 
-	<bean id="urlDAO"
-		class="com.saas.luna.coreBizlogic.dao.systemManagement.hibernate.HibernateUrlDAO">
-		<property name="sessionFactory" ref="sessionFactory"></property>
-	</bean>
 
 	<bean id="methodDAO"
 		class="com.saas.luna.coreBizlogic.dao.systemManagement.hibernate.HibernateMethodDAO">
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
 	-->
+
+	<bean id="urlDAO"
+		class="com.saas.luna.coreBizlogic.dao.systemMaster.hibernateImpl.HibernateUrlDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
 </beans>
