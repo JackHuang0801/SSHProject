@@ -72,6 +72,7 @@
 				<prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
 				<prop key="hibernate.jdbc.fetch_size">${hibernate.jdbc.fetch_size}</prop>
 				<prop key="hibernate.jdbc.batch_size">${hibernate.jdbc.batch_size}</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
 			</props>
 		</property>
         <!-- 自动扫描注解方式配置的hibernate类文件 -->

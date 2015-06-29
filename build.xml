@@ -597,28 +597,29 @@
             <hbm2doc destdir="${build.docs.dir}/dbschema" />
         </hibernatetool>
     </target>
-    <target name="export-dbschema-systemManagement" depends="compile">
+    <target name="export-dbschema-systemMaster" depends="compile">
         <echo message="Generating the appropriate SQL DDL... Store the result in a file or export it directly to the database." />
         <taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask">
-            <classpath refid="classpath" />
+            <classpath refid="compile-classpath" />
         </taskdef>
         <taskdef name="annotationconfiguration" classname="org.hibernate.tool.ant.AnnotationConfigurationTask">
-            <classpath refid="classpath" />
+            <classpath refid="compile-classpath" />
         </taskdef>
         <delete dir="${build.sql.dir}" />
         <delete dir="${build.docs.dir}/dbschema" />
         <mkdir dir="${build.sql.dir}" />
         <mkdir dir="${build.docs.dir}/dbschema" />
+    	<mkdir dir="${res.sql.dir}/dbschema/systemMaster" />
         <hibernatetool destdir="${build.sql.dir}">
-            <classpath refid="classpath" />
-            <annotationconfiguration configurationfile="${res.make.dir}/hibernate-systemManagement.cfg.xml" />
+            <classpath refid="compile-classpath" />
+            <annotationconfiguration configurationfile="${res.make.dir}/hibernate-systemMaster.cfg.xml" />
             <hbm2ddl
                 export="true"
                 update="false"
                 drop="true"
                 create="true"
                 delimiter=";"
-                outputfilename="db_table_schema_systemManagement.sql"
+                outputfilename="db_table_schema_systemMaster.sql"
                 format="true"
                 haltonerror="false">
             </hbm2ddl>
@@ -708,17 +709,17 @@
 		  <classpath refid="classpath"></classpath>
 		</sql>
 	</target>
-	<target name="initialize-systemManagement" depends="export-dbschema-systemManagement">
+	<target name="initialize-systemMaster" depends="export-dbschema-systemMaster">
         <echo message="Initializing database... If error occurs,let it be." />
         <sql
-        	driver="net.sourceforge.jtds.jdbc.Driver"
-            url="jdbc:jtds:sqlserver://127.0.0.1:1433;DatabaseName=pmi"
-            userid="root"
-            password="root"
-        	src="${res.sql.dir}/db_systemManagementTable_init.sql"
+        	driver="com.mysql.jdbc.Driver"
+            url="jdbc:mysql://127.0.0.1:3306/luna_dev_live"
+            userid="Jack_Huang"
+            password="123456"
+        	src="${res.sql.dir}/db_systemMasterTable_init.sql"
         	encoding="UTF-8"
             onerror="continue">
-          <classpath refid="classpath"/>
+          <classpath refid="compile-classpath"/>
         </sql>
 	</target>
 
