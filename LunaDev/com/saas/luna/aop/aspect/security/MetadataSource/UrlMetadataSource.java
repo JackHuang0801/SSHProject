@@ -11,6 +11,8 @@ package com.saas.luna.aop.aspect.security.MetadataSource;
 
 import java.util.Collection;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
@@ -24,8 +26,10 @@ import org.springframework.security.web.access.intercept.FilterInvocationSecurit
  */
 public class UrlMetadataSource implements FilterInvocationSecurityMetadataSource, InitializingBean {
 
+	private static final Log logger = LogFactory.getLog(UrlMetadataSource.class);
+
 	static {
-		System.out.println("\n----------Self Definition Intercepter is Coming which is for Url---------------");
+		logger.info("\n\n=============Self Definition Intercepter is Coming which is for Url=============\n");
 	}
 
 	@Override

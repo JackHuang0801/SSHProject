@@ -35,6 +35,17 @@
 		<param-value>SSHProject.root</param-value>
 	</context-param>
 
+	<!-- 配置log4j日志文件 -->
+	<context-param>
+		<param-name>log4jConfigLocation</param-name>
+		<param-value>/WEB-INF/classes/CONF-INF/log4j.properties</param-value>
+	</context-param>
+	<listener>
+		<listener-class>org.springframework.web.util.Log4jConfigListener
+		</listener-class>
+	</listener>
+
+
 	<!--
 		- Location of the XML file that defines the root application context - Applied by ContextLoaderListener.
 	-->
@@ -149,6 +160,9 @@
 		<listener-class>com.saas.luna.aop.aspect.security.listener.ServletContextLoaderListener</listener-class>
 	</listener>
 
+	<!--
+		主要负责处理由JavaBean Introspector使用而引起的缓存泄露, 它是一个在web应用关闭时清除JavaBean Introspector的监听器.
+	-->
 	<listener>
 		<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
 	</listener>

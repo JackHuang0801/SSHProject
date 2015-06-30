@@ -1,0 +1,16 @@
+create table Role_Resource (ROLE_ID bigint not null, RESOURCE_ID bigint not null, primary key (ROLE_ID, RESOURCE_ID)) type=InnoDB
+create table T_ROLE (id bigint not null, createTime datetime, creator varchar(60), description varchar(255), lastUpdateTime datetime, lastUpdater varchar(60), optimisticLock integer, remark varchar(255), isInnerRole varchar(255), roleCode varchar(20) not null, roleName varchar(80) not null, primary key (id)) type=InnoDB
+create table T_USER (id bigint not null, createTime datetime, creator varchar(60), description varchar(255), lastUpdateTime datetime, lastUpdater varchar(60), optimisticLock integer, remark varchar(255), disabled bit default 0  not null, email varchar(255), mobileTelephone varchar(255), officePhone varchar(255), password varchar(255), state varchar(255), trueName varchar(255), userCode varchar(255), userName varchar(255), departmentId bigint, primary key (id)) type=InnoDB
+create table T_department (id bigint not null, createTime datetime, creator varchar(60), description varchar(255), lastUpdateTime datetime, lastUpdater varchar(60), optimisticLock integer, remark varchar(255), departmentCode varchar(255), departmentName varchar(255), fax varchar(255), location varchar(255), phone varchar(255), parentDepartment_FK bigint, primary key (id)) type=InnoDB
+create table T_resource (resourceType varchar(31) not null, id bigint not null, createTime datetime, creator varchar(60), description varchar(255), lastUpdateTime datetime, lastUpdater varchar(60), optimisticLock integer, remark varchar(255), resourceCode varchar(20) not null, resourceName varchar(80) not null, value varchar(255), parentMenu_FK bigint, parentMethod_FK bigint, url_FK bigint, parentUrl_FK bigint, primary key (id)) type=InnoDB
+create table User_Role (USER_ID bigint not null, ROLE_ID bigint not null, primary key (USER_ID, ROLE_ID)) type=InnoDB
+alter table Role_Resource add constraint FK_20w2o9h8y13w473qa4113fp5q foreign key (RESOURCE_ID) references T_resource (id)
+alter table Role_Resource add constraint FK_fjf1so4lc54nrtdj93jgbte8y foreign key (ROLE_ID) references T_ROLE (id)
+alter table T_USER add constraint FK_4cu0lsc0mrs239dhn9v90jedc foreign key (departmentId) references T_department (id)
+alter table T_department add constraint FK_qb3ws3cfj1iqo1vf65tytbwjv foreign key (parentDepartment_FK) references T_department (id)
+alter table T_resource add constraint FK_2ruanq0ohtkxhwdk5v71ubihb foreign key (parentMenu_FK) references T_resource (id)
+alter table T_resource add constraint FK_bhgef2945me6u0l6q7r6f4sy9 foreign key (parentMethod_FK) references T_resource (id)
+alter table T_resource add constraint FK_8qvtdgi78jxu5cj44ovtkw7e2 foreign key (url_FK) references T_resource (id)
+alter table T_resource add constraint FK_bnc142dgq98t2kdndvyda4ulq foreign key (parentUrl_FK) references T_resource (id)
+alter table User_Role add constraint FK_47ep19smqqm6ywq03r6mlkg3h foreign key (ROLE_ID) references T_ROLE (id)
+alter table User_Role add constraint FK_qvvgtwb5f5updsq9vou5dsakd foreign key (USER_ID) references T_USER (id)

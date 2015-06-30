@@ -1,2 +1,5 @@
 eclipse.preferences.version=1
+encoding//ProjectContent/CONF-INF/Hibernate/hibernate.properties=UTF-8
+encoding//ProjectContent/CONF-INF/log4j.properties=UTF-8
+encoding//WebContent/WEB-INF/web.xml=UTF-8
 encoding/<project>=UTF-8
