@@ -363,6 +363,12 @@
 				<include name="*.jar"/>
 			</fileset>
 		</copy>
+
+		<copy todir="${lib.home}/runLib">
+			<fileset dir="${lib.home}/devLib/struts2-2.3.24">
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
 		<copy todir="${lib.home}/runLib">
 			<fileset dir="${lib.home}/devLib/hibernate-release-4.3.10.Final">
 				<include name="*.jar"/>
